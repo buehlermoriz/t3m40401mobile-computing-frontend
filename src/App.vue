@@ -1,4 +1,6 @@
+<script>
+import { RouterView } from 'vue-router'
+</script>
 <template>
-  test
-  <div class="text-3xl font-bold underline"> test</div>
+<RouterView />
 </template>
