@@ -8,7 +8,7 @@
               <span class="sr-only">Previous month</span>
               <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
             </button>
-            <div class="flex-auto text-sm font-semibold">January</div>
+            <div class="flex-auto text-sm font-semibold">{{month.name}}</div>
             <button type="button" class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
               <span class="sr-only">Next month</span>
               <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
@@ -24,7 +24,7 @@
             <div>S</div>
           </div>
           <div class="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
-            <button v-for="(day, dayIdx) in days" :key="day.date" type="button" :class="['py-1.5 hover:bg-gray-100 focus:z-10', day.isCurrentMonth ? 'bg-white' : 'bg-gray-50', (day.isSelected || day.isToday) && 'font-semibold', day.isSelected && 'text-white', !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900', !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400', day.isToday && !day.isSelected && 'text-indigo-600', dayIdx === 0 && 'rounded-tl-lg', dayIdx === 6 && 'rounded-tr-lg', dayIdx === days.length - 7 && 'rounded-bl-lg', dayIdx === days.length - 1 && 'rounded-br-lg']">
+            <button v-for="(day, dayIdx) in month.days" :key="day.date" type="button" :class="['py-1.5 hover:bg-gray-100 focus:z-10', day.isCurrentMonth ? 'bg-white' : 'bg-gray-50', (day.isSelected || day.isToday) && 'font-semibold', day.isSelected && 'text-white', !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900', !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400', day.isToday && !day.isSelected && 'text-indigo-600', dayIdx === 0 && 'rounded-tl-lg', dayIdx === 6 && 'rounded-tr-lg', dayIdx === month.days.length - 7 && 'rounded-bl-lg', dayIdx === month.days.length - 1 && 'rounded-br-lg']">
               <time :datetime="day.date" :class="['mx-auto flex h-7 w-7 items-center justify-center rounded-full', day.isSelected && day.isToday && 'bg-indigo-600', day.isSelected && !day.isToday && 'bg-gray-900']">{{ day.date.split('-').pop().replace(/^0/, '') }}</time>
             </button>
           </div>
@@ -90,7 +90,21 @@
     MapPinIcon,
   } from '@heroicons/vue/20/solid'
   import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+  import { defineProps, ref, onMounted } from 'vue'
+  import { getMonth } from '@/services/CallendarService'
   
+  const props = defineProps({
+  selectedYear: {
+    type: Number,
+    required: true,
+  },
+  selectedMonth: {
+    type: Number,
+    required: false,
+    default: new Date().getMonth(),
+  },
+});
+
   const meetings = [
     {
       id: 1,
@@ -104,7 +118,7 @@
     },
     // More meetings...
   ]
-  const days = [
+  const month = ref([
     { date: '2021-12-27' },
     { date: '2021-12-28' },
     { date: '2021-12-29' },
@@ -147,5 +161,9 @@
     { date: '2022-02-04' },
     { date: '2022-02-05' },
     { date: '2022-02-06' },
-  ]
+  ])
+
+  onMounted(() => {
+  month.value = getMonth(props.selectedYear, props.selectedMonth)
+})
   </script>

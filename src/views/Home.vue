@@ -26,10 +26,10 @@
               <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1">
                   <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</a>
+                    <div @click="view='month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</a>
+                    <div @click="view='year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
                   </MenuItem>
                 </div>
               </MenuItems>
@@ -53,26 +53,29 @@
               </div>
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</a>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</a>
-                </MenuItem>
+                    <div @click="view='month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <div @click="view='year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
+                  </MenuItem>
               </div>
             </MenuItems>
           </transition>
         </Menu>
       </div>
     </header>
-  <YearCallendar :selectedYear="selectedYear"/>
+  <YearCallendar v-if="view == 'year'" :selectedYear="selectedYear"/>
+  <MonthCallendar v-if="view == 'month'" :selectedYear="selectedYear"/>
 </template>
 
 <script setup>
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/vue/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import  YearCallendar  from '../components/YearCallendar.vue'
+import MonthCallendar from '../components/MonthCallendar.vue'
 import { ref } from 'vue'
 const selectedYear = ref(new Date().getFullYear())
+const view = ref('year')
 
 
 </script>

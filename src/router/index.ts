@@ -17,7 +17,7 @@ const router = createRouter({
         {
             path: "/month",
             name: "month",
-            component: () => import("@/views/MonthCallendar.vue"),
+            component: () => import("@/components/MonthCallendar.vue"),
             meta: {
                 title: "Monat",
                 requiresAuth: true
