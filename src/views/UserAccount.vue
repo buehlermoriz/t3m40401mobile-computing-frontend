@@ -99,7 +99,7 @@ async function linkToSso() {
         <p class="mt-6 leading-8 ">Vielen Dank für Ihre Nutzung von Media Sales. Unser System hat erkannt,
           dass Sie sich über ein Single Sign-On (SSO) angemeldet haben. Wenn Sie Ihre Emailadresse, ihren Benutzernamen
           oder ihr Passwort ändern möchten können Sie dies direkt bei <a
-            class="text-color-sz dark:text-color-nk"
+            class="text-primary dark:text-color-nk"
             href="https://myaccount.microsoft.com/">Microsoft</a> anpassen!</p>
       </div>
     </div>
@@ -114,7 +114,7 @@ async function linkToSso() {
           Klicken Sie auf jetzt verbinden und nutzen Sie zukünftig direkt den SV Gruppe SSO Login ganz ohne Eingabe von
           Emailadresse und Passwort!</p>
         <button @click="linkToSso"
-          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white bg-color-sz dark:bg-color-nk mt-3">
+          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white bg-primary dark:bg-color-nk mt-3">
           SSO jetzt verbinden
         </button>
       </div>
@@ -134,7 +134,7 @@ async function linkToSso() {
             <div class="mt-2">
               <input :disabled="provider == 'microsoft.com'" id="email" v-model="email" name="email" type="email"
                 autocomplete="email"
-                class="block w-full  rounded-md border-0 text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-color-sz dark:ring-color-nk "
+                class="block w-full  rounded-md border-0 text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary dark:ring-color-nk "
                 :class="provider == 'microsoft.com' ? 'opacity-30' : ''" />
             </div>
           </div>
@@ -145,7 +145,7 @@ async function linkToSso() {
               class="block text-sm font-medium leading-6 text-gray-900 ">Benutzername</label>
             <div class="mt-2">
               <input id="name" :disabled="provider == 'microsoft.com'" v-model="name" name="name" autocomplete="name"
-                class="block w-full  rounded-md border-0 text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-color-sz dark:ring-color-nk "
+                class="block w-full  rounded-md border-0 text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary dark:ring-color-nk "
                 :class="provider == 'microsoft.com' ? 'opacity-30' : ''" />
             </div>
           </div>
@@ -155,7 +155,7 @@ async function linkToSso() {
           <div>
             <button type="submit" :disabled="!meta.valid || provider == 'microsoft.com'"
               :class="(!meta.valid || provider == 'microsoft.com') ? 'opacity-30' : ''"
-              class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white bg-color-sz dark:bg-color-nk">
+              class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white bg-primary dark:bg-color-nk">
               Nutzer anpassen
             </button>
           </div>
@@ -172,14 +172,14 @@ async function linkToSso() {
         <p class="text-sm text-gray-900 ">Erhalten Sie eine Email zum Zurücksetzen Ihres Passwortes.
         </p>
         <button @click="passwortReset" :disabled="provider == 'microsoft.com'"
-          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 border-2 border-color-sz dark:border-color-nk text-color-sz dark:text-color-nk  "
+          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 border-2 border-primary dark:border-color-nk text-primary dark:text-color-nk  "
           :class="provider == 'microsoft.com' ? 'opacity-30' : ''">
           Passwort zurücksetzen </button>
         <!-- logout -->
         <p class="mt-auto font-semibold text-xl text-gray-900 ">logout</p>
         <p class="text-sm text-gray-900 ">Melden Sie sich von Media Sales ab.</p>
         <a href="/logout"
-          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 border-2 border-color-sz dark:border-color-nk text-color-sz dark:text-color-nk  ">
+          class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 border-2 border-primary dark:border-color-nk text-primary dark:text-color-nk  ">
           Abmelden </a>
         <!-- feedback -->
         <p class="mt-auto font-semibold text-xl text-gray-900 ">Region</p>
@@ -189,7 +189,7 @@ async function linkToSso() {
                           <div class="flex items-center gap-x-3">
                             <input id="sz" name="push-notifications" type="radio" v-model="region"
                               value="sz"
-                              class="h-4 w-4 border-gray-300 text-color-sz dark:text-color-nk" />
+                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk" />
                             <label for="sz" class="block text-sm text-gray-90 leading-6">
                               SZ
                             </label>
@@ -197,7 +197,7 @@ async function linkToSso() {
                           <div class="flex items-center gap-x-3">
                             <input id="nk" name="push-notifications" type="radio" v-model="region"
                               value="nk"
-                              class="h-4 w-4 border-gray-300 text-color-sz dark:text-color-nk" />
+                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk" />
                             <label for="nk" class="block text-sm text-gray-90 leading-6">
                             NK
                             </label>

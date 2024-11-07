@@ -400,7 +400,7 @@ onMounted(async () => {
                       </ComboboxLabel>
                       <div class="relative mt-2">
                         <ComboboxInput
-                          class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-color-sz dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+                          class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
                           @change="queryIssue = $event.target.value" @blur="queryIssue = ''"
                           :display-value="(issue) => ((issue as Issue)?.issue ? (issue as Issue)?.issue + ' - ' : '') + ((issue as Issue)?.name || '')" />
                         <ComboboxButton
@@ -413,14 +413,14 @@ onMounted(async () => {
                           <ComboboxOption v-for="(issue, index) in filteredIssues" :key="index" :value="issue"
                             as="template" v-slot="{ active, selected }">
                             <li
-                              :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-color-sz dark:bg-color-nk text-white' : 'text-gray-900']">
+                              :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-primary dark:bg-color-nk text-white' : 'text-gray-900']">
                               <span class="block truncate">
                                 <span :class="{ 'font-semibold': selected }">{{ issue.issue }}</span>
                                 <span :class="[active ? 'text-white' : 'text-gray-400']">{{ ' ' + issue.name }}</span>
                               </span>
 
                               <span v-if="selected"
-                                :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-color-sz dark:text-color-nk']">
+                                :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-primary dark:text-color-nk']">
                                 <CheckIcon class="h-5 w-5" aria-hidden="true" />
                               </span>
                             </li>
@@ -438,7 +438,7 @@ onMounted(async () => {
                           <div class="flex items-center gap-x-3">
                             <input id="base-price" name="push-notifications" type="radio" v-model="priceclass"
                               value="base-price"
-                              class="h-4 w-4 border-gray-300 text-color-sz dark:text-color-nk focus:ring-color-sz dark:focus:ring-color-nk" />
+                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk focus:ring-primary dark:focus:ring-color-nk" />
                             <Tooltip text="Für Preisregelung siehe unten" position="right">
                               <label for="base-price" class="block text-sm leading-6">
                                 <span class="font-semibold text-gray-900">GP</span>
@@ -449,7 +449,7 @@ onMounted(async () => {
                           <div class="flex items-center gap-x-3">
                             <input id="local-price" name="push-notifications" type="radio" v-model="priceclass"
                               value="local-price"
-                              class="h-4 w-4 border-gray-300 text-color-sz dark:text-color-nk focus:ring-color-sz dark:focus:ring-color-nk" />
+                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk focus:ring-primary dark:focus:ring-color-nk" />
                             <Tooltip text="Für Preisregelung siehe unten" position="right">
                               <label for="local-price" class="block text-sm leading-6">
                                 <span class="font-semibold text-gray-900">OT</span>
@@ -481,7 +481,7 @@ onMounted(async () => {
                     </ComboboxLabel>
                     <div class="relative mt-2">
                       <ComboboxInput
-                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-color-sz dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
                         @change="queryPModul = $event.target.value"
                         :display-value="(pModule) => (pModule as PModule)?.module || ''" @blur="blurPModule"
                         @focus="focusPModule" :readonly="!selectedIssue" />
@@ -495,13 +495,13 @@ onMounted(async () => {
                         <ComboboxOption v-for="(pModule, index) in filteredPModules" :key="index" :value="pModule"
                           as="template" v-slot="{ active, selected }">
                           <li
-                            :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-color-sz dark:bg-color-nk text-white' : 'text-gray-900']">
+                            :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-primary dark:bg-color-nk text-white' : 'text-gray-900']">
                             <span :class="['block truncate', selected && 'font-semibold']">
                               {{ pModule.module }}
                             </span>
 
                             <span v-if="selected"
-                              :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-color-sz dark:text-color-nk']">
+                              :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-primary dark:text-color-nk']">
                               <CheckIcon class="h-5 w-5" aria-hidden="true" />
                             </span>
                           </li>
@@ -525,7 +525,7 @@ onMounted(async () => {
                     </ComboboxLabel>
                     <div class="relative mt-2">
                       <ComboboxInput
-                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-color-sz dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
                         @change="queryDModul = $event.target.value"
                         :display-value="(pModule) => (pModule as DModule)?.digital_module || ''" @focus="focusDModule"
                         @blur="blurDModule" :readonly="!selectedPModul" />
@@ -539,13 +539,13 @@ onMounted(async () => {
                         <ComboboxOption v-for="(dModule, index) in filteredDModules" :key="index" :value="dModule"
                           as="template" v-slot="{ active, selected }">
                           <li
-                            :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-color-sz dark:bg-color-nk text-white' : 'text-gray-900']">
+                            :class="['relative cursor-default select-none py-2 pl-8 pr-4', active ? 'bg-primary dark:bg-color-nk text-white' : 'text-gray-900']">
                             <span :class="['block truncate', selected && 'font-semibold']">
                               {{ dModule.digital_module }}
                             </span>
 
                             <span v-if="selected"
-                              :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-color-sz dark:text-color-nk']">
+                              :class="['absolute inset-y-0 left-0 flex items-center pl-1.5', active ? 'text-white' : 'text-primary dark:text-color-nk']">
                               <CheckIcon class="h-5 w-5" aria-hidden="true" />
                             </span>
                           </li>
@@ -565,7 +565,7 @@ onMounted(async () => {
                   :class="[
                     'rounded-md px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
                     {
-                      'bg-color-sz dark:bg-color-nk text-white': selectedIssue && selectedPModul && selectedDModul, // Active styles
+                      'bg-primary dark:bg-color-nk text-white': selectedIssue && selectedPModul && selectedDModul, // Active styles
                       'bg-gray-400 text-gray-600 cursor-not-allowed': !selectedIssue || !selectedPModul || !selectedDModul // Disabled styles
                     }
                   ]">Hinzufügen</button>
@@ -676,7 +676,7 @@ onMounted(async () => {
                       Intl.NumberFormat().format(order.totalPrice) }} €</td>
                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <component :is="TrashIcon" @click="removeOrder(index)" type="button"
-                        class="text-color-sz dark:text-color-nk h-4">
+                        class="text-primary dark:text-color-nk h-4">
                         <span class="sr-only">, {{ order.issue }}</span>
                       </component>
                     </td>
