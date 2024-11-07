@@ -3,6 +3,6 @@
 </template>
 
 <script setup>
-import  YearCallendar  from '../components/YearCallendar.vue'
+import  YearCallendar  from './YearCallendar.vue'
 
 </script>

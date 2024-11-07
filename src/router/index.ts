@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from "vue-router"
-import HomeView from "@/views/Home.vue"
 import store from "@/store";
 import { firebaseAuth } from "@/config/firebaseConfig";
 
@@ -9,9 +8,18 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
-            component: HomeView,
+            component: () => import("@/views/YearCallendar.vue"),
             meta: {
                 title: "Home",
+                requiresAuth: true
+            },
+        },
+        {
+            path: "/month",
+            name: "month",
+            component: () => import("@/views/MonthCallendar.vue"),
+            meta: {
+                title: "Monat",
                 requiresAuth: true
             },
         },
