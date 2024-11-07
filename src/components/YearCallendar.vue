@@ -27,12 +27,6 @@
               <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1">
                   <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Day view</a>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Week view</a>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
                     <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</a>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
@@ -59,17 +53,6 @@
                 </MenuItem>
               </div>
               <div class="py-1">
-                <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Go to today</a>
-                </MenuItem>
-              </div>
-              <div class="py-1">
-                <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Day view</a>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Week view</a>
-                </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</a>
                 </MenuItem>
