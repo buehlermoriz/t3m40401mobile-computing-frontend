@@ -12,7 +12,7 @@ const router = createRouter({
             component: HomeView,
             meta: {
                 title: "Home",
-                // requiresAuth: true
+                requiresAuth: true
             },
         },
         {
@@ -61,18 +61,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta?.title ? "Media Sales - " + to.meta.title : "Media Sales"
-    
-    //update region
-    const regionParam = to.query.region;
-
-    if (regionParam && typeof regionParam === 'string' && ['nk', 'sz'].includes(regionParam)) {
-        const currentRegion = store.getters.user.region;
-        if (currentRegion !== regionParam) {
-            store.dispatch("setRegion", regionParam);
-            location.reload()
-        }
-    }
+    document.title = to.meta?.title ? "Kalenderio - " + to.meta.title : "Kalenderio"
     
     //check login
     firebaseAuth.onAuthStateChanged((user) => {
@@ -81,12 +70,11 @@ router.beforeEach((to, from, next) => {
             const loggedIn = store.getters.user.loggedIn
             const requiresAuth = to.meta.requiresAuth
 
-            // if (requiresAuth && loggedIn === false) {
-            //     next({name: "login"});
-            // } else {
-            //     next();
-            // }
-                 next();
+            if (requiresAuth && loggedIn === false) {
+                next({name: "login"});
+            } else {
+                next();
+            }
 
         })
     })

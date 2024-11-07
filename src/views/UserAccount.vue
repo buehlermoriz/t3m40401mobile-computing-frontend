@@ -25,14 +25,6 @@ const errorMsg = ref<string | undefined>();
 const msg = ref<string | undefined>();
 const provider = ref<string | undefined>(store.getters.user.data.provider);
 
-const region = ref<string | undefined>(store.getters.user.region);
-
-watch(region, ()=>{
-  store.dispatch("setRegion", region.value)
-    // Force a re-render after updating localStorage
-   location.reload()
-})
-
 
 const updateUser = handleSubmit(async (values) => {
   const currentUser = firebaseAuth.currentUser;
@@ -181,29 +173,6 @@ async function linkToSso() {
         <a href="/logout"
           class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 border-2 border-primary dark:border-color-nk text-primary dark:text-color-nk  ">
           Abmelden </a>
-        <!-- feedback -->
-        <p class="mt-auto font-semibold text-xl text-gray-900 ">Region</p>
-        <p class="text-sm text-gray-900 ">Wählen Sie die Region um das Farbschema und die Angebote anzupassen.</p>
-        <fieldset>
-                        <div class="space-y-1 mt-2">
-                          <div class="flex items-center gap-x-3">
-                            <input id="sz" name="push-notifications" type="radio" v-model="region"
-                              value="sz"
-                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk" />
-                            <label for="sz" class="block text-sm text-gray-90 leading-6">
-                              SZ
-                            </label>
-                          </div>
-                          <div class="flex items-center gap-x-3">
-                            <input id="nk" name="push-notifications" type="radio" v-model="region"
-                              value="nk"
-                              class="h-4 w-4 border-gray-300 text-primary dark:text-color-nk" />
-                            <label for="nk" class="block text-sm text-gray-90 leading-6">
-                            NK
-                            </label>
-                          </div>
-                        </div>
-                      </fieldset>
       </div>
 
     </div>

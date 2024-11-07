@@ -44,12 +44,6 @@ async function signUp() {
 
 </script>
 <template>
-  <div class="md:mx-auto md:w-full md:max-w-md">
-    <DynamicLogo />
-    <h2 class="mt-6 text-center text-2xl font-bold leading-9  text-gray-900 ">Bei Media Sales registrieren
-    </h2>
-  </div>
-
   <div class="mt-10 md:mx-auto md:w-full md:max-w-[480px]">
     <div class=" bg-ms-white  px-6 py-12 shadow md:rounded-lg md:px-12">
       <!--Form -------->

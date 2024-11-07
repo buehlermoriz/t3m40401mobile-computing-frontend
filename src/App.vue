@@ -5,7 +5,6 @@ import Footer from "@/components/Footer.vue";
 import store from "@/store";
 import {ref} from "vue"
 
-const region = ref<string | undefined>(store.getters.user.region);
 
 </script>
 
@@ -15,7 +14,7 @@ const region = ref<string | undefined>(store.getters.user.region);
 </style>
 
 <template>
-  <div class="flex flex-col min-h-screen" :class="region === 'nk' ? 'dark' : ''">
+  <div class="flex flex-col min-h-screen">
     <Navbar />
   <div class="px-4 md:px-8  2xl:px-40">
       <RouterView/>
