@@ -1,14 +1,22 @@
 import { firebaseAuth, firebaseFirestore } from "@/config/firebaseConfig";
-import { sendPasswordResetEmail, signInWithEmailAndPassword, OAuthProvider, signInWithPopup,linkWithPopup } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithPopup } from "firebase/auth";
 import { collection, getDocs, query, where, limit, updateDoc, arrayUnion, doc } from "firebase/firestore";
 import { createStore } from "vuex";
 import { errorTranslateMap } from "@/config/ErrorMap";
 
+interface UserState {
+  loggedIn: boolean;
+  data: any | null;
+  region: string;
+}
 
-const store = createStore({
+interface RootState {
+  user: UserState;
+}
+
+const store = createStore<RootState>({
   state: {
     user: {
-      //user
       loggedIn: false,
       data: null,
       region: localStorage.getItem('region') || 'sz',
@@ -16,78 +24,57 @@ const store = createStore({
   },
 
   getters: {
-    //user
     user(state) {
       return state.user;
     }
   },
 
   mutations: {
-    //user
     SET_USER(state, payload) {
       state.user.data = payload;
     },
     SET_LOGGED_IN(state, value) {
       state.user.loggedIn = value;
     },
-    SET_REGION(state, value){
-      state.user.region =value
+    SET_REGION(state, value) {
+      state.user.region = value;
       localStorage.setItem('region', value);
     }
   },
 
   actions: {
     async logIn(context, { email, password }) {
-        try{
-
-            const response = await signInWithEmailAndPassword(firebaseAuth, email, password);
-            if (response) {
-                context.commit("SET_USER", response.user);
-            } else {
-                throw new Error("login failed");
-            }
-        }
-        catch (error: any) {
-            let msg;
-            msg = errorTranslateMap.get(error.code);
-            if (msg == undefined) {
-              msg = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut.";
-            }
-            return msg;
-        }
-    },
-    async microsoftLogin(context) {
-      const provider = new OAuthProvider("microsoft.com");
-      provider.setCustomParameters({
-        tenant: "656d1a66-8cb9-4f57-8a6d-404390b37703"
-      });
       try {
-        await signInWithPopup(firebaseAuth, provider)
-        context.commit("SET_USER", firebaseAuth.currentUser);
-      } catch (error: any) {
-        let msg;
-        msg = errorTranslateMap.get(error.code);
-        if (msg == undefined) {
-          msg = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut: "+error.code;
+        const response = await signInWithEmailAndPassword(firebaseAuth, email, password);
+        if (response) {
+          context.commit("SET_USER", response.user);
+          context.commit("SET_LOGGED_IN", true);
+        } else {
+          throw new Error("login failed");
         }
+      } catch (error: any) {
+        let msg = errorTranslateMap.get(error.code) || "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut.";
         return msg;
       }
     },
-    async linkAccount(context,  user ) {
-      const provider = new OAuthProvider("microsoft.com");
-      provider.setCustomParameters({
-        tenant: "656d1a66-8cb9-4f57-8a6d-404390b37703"
-      });
+    async googleLogin(context) {
+      const provider = new GoogleAuthProvider();
       try {
-
-        await linkWithPopup(user, provider)
+        await signInWithPopup(firebaseAuth, provider);
+        context.commit("SET_USER", firebaseAuth.currentUser);
+        context.commit("SET_LOGGED_IN", true);
+      } catch (error: any) {
+        let msg = errorTranslateMap.get(error.code) || "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut: " + error.code;
+        return msg;
+      }
+    },
+    async linkAccount(context, user) {
+      const provider = new GoogleAuthProvider();
+      try {
+        await linkWithPopup(user, provider);
         context.commit("SET_USER", firebaseAuth.currentUser);
       } catch (error: any) {
-        let msg;
-        msg = errorTranslateMap.get(error.code);
-        if (msg == undefined) {
-          msg = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut.";
-        }
+        let msg = errorTranslateMap.get(error.code) || "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut.";
         return msg;
       }
     },
@@ -96,11 +83,9 @@ const store = createStore({
       context.commit("SET_LOGGED_IN", false);
       context.commit("SET_USER", null);
     },
-
-    async resetPassword(contex, { email }) {
+    async resetPassword(context, { email }) {
       await sendPasswordResetEmail(firebaseAuth, email);
     },
-
     async fetchUser(context, user) {
       context.commit("SET_LOGGED_IN", user !== null);
       if (user) {
@@ -121,34 +106,30 @@ const store = createStore({
         context.commit("SET_USER", null);
       }
     },
-    async setRegion(context, region){
-      context.commit("SET_REGION", region)
+    async setRegion(context, region) {
+      context.commit("SET_REGION", region);
     }
   },
 });
+
 const checkDomain = async (user: any, querySnapshot: any) => {
-  //check if the user is already present
   if (querySnapshot.empty) {
-    const userDomain = user.email.split("@")[1]
+    const userDomain = user.email.split("@")[1];
     const availableDomains = query(collection(firebaseFirestore, "accounts"), where("domains", "array-contains", userDomain), limit(1));
     const domains = await getDocs(availableDomains);
-    //check if the domain is allowed
     if (domains.empty) {
-      return querySnapshot
+      return querySnapshot;
     }
-    //upload the new user to the account
-    const item = domains.docs[0]
+    const item = domains.docs[0];
     await updateDoc(doc(firebaseFirestore, "accounts", item.id), {
       users: arrayUnion(user.uid)
-    })
-    //return the updated querySnapshot
+    });
     const accounts = query(collection(firebaseFirestore, "accounts"), where("users", "array-contains", user.uid));
     querySnapshot = await getDocs(accounts);
     return querySnapshot;
-  }
-  else {
+  } else {
     return querySnapshot;
   }
-
 };
+
 export default store;

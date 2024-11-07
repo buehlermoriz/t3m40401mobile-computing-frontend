@@ -13,7 +13,6 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig)
 const firebaseAuth = getAuth(firebaseApp)
-firebaseAuth.tenantId = import.meta.env.VITE_AUTH_MANDANT
 const firebaseFirestore = getFirestore(firebaseApp)
 
 export {firebaseApp, firebaseAuth, firebaseFirestore}

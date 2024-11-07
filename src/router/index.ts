@@ -12,7 +12,7 @@ const router = createRouter({
             component: HomeView,
             meta: {
                 title: "Home",
-                requiresAuth: true
+                // requiresAuth: true
             },
         },
         {
@@ -80,16 +80,14 @@ router.beforeEach((to, from, next) => {
          .then(() => {
             const loggedIn = store.getters.user.loggedIn
             const requiresAuth = to.meta.requiresAuth
-            const isSVGroupOnly = to.meta.isSVGroupOnly
-            const isUserInSVGroupTenant = store.getters.user.data?.tenant === "SV-Gruppe"
 
-            if (requiresAuth && loggedIn === false) {
-                next({name: "login"});
-            } else if(isSVGroupOnly && isUserInSVGroupTenant === false) {
-                next({name: "home"})
-            } else {
-                next();
-            }
+            // if (requiresAuth && loggedIn === false) {
+            //     next({name: "login"});
+            // } else {
+            //     next();
+            // }
+                 next();
+
         })
     })
 });

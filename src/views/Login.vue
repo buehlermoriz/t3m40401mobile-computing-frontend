@@ -4,7 +4,6 @@ import { ref, onMounted } from "vue";
 import router from "@/router";
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 import { XMarkIcon } from '@heroicons/vue/20/solid'
-import DynamicLogo from "@/components/DynamicLogo.vue";
 import { useForm } from "vee-validate";
 import schema from "../services/ValidationService";
 
@@ -33,7 +32,7 @@ const logIn = handleSubmit(async (values) => {
 });
 
 const loginSso = async () => {
-  const response = await store.dispatch("microsoftLogin");
+  const response = await store.dispatch("googleLogin");
   if (response) {
     errorMsg.value = response;
   }
@@ -62,11 +61,6 @@ onMounted(() => {
 </script>
 <template>
   <!-- login -->
-  <div class="md:mx-auto md:w-full md:max-w-md">
-    <h2 class="mt-6 text-center text-2xl font-bold leading-9  text-gray-900 ">Bei Media Sales
-      anmelden</h2>
-  </div>
-
   <div class="mt-10 md:mx-auto md:w-full md:max-w-[480px]">
     <div class=" bg-ms-white  px-6 py-12 shadow md:rounded-lg md:px-12">
       <!--Form -------->
@@ -114,7 +108,7 @@ onMounted(() => {
       @click="loginSso()"
             class="mt-4 ring-2 ring-primary dark:ring-color-nk flex justify-center gap-x-2 items-center w-full  rounded-md px-3 font-semibold p-1.5 text-sm leading-6 text-primary dark:text-color-nk"
            >
-            SV Gruppe Login (SSO)
+            Google SSO
           </button>
     </div>
 

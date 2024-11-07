@@ -25,15 +25,6 @@ const focusPassword = ref<boolean>(false);
 async function signUp() {
 
   try {
-    const domain = email.value.split("@")[1]
-    const accounts = query(collection(firebaseFirestore, "accounts"), where("domains", "array-contains", domain), limit(1));
-    const querySnapshot = await getDocs(accounts);
-
-    if (querySnapshot.empty) {
-      errorMsg.value = errorTranslateMap.get("Domain isn't available") ?? "Domain ist nicht verfügbar"
-      return
-    }
-
     await createUserWithEmailAndPassword(firebaseAuth, email.value, password.value)
     let user = firebaseAuth.currentUser
     if (user == null) {
