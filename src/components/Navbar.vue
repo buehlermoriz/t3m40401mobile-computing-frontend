@@ -5,7 +5,7 @@
       aria-label="Global"
     >
       <div class="flex lg:flex-1">
-        <a href="#" class="flex items-center gap-x-5">
+        <a href="/" class="flex items-center gap-x-5">
           <DynamicLogo />
           <span class="text-xl font-bold text-gray-900 md:text-2xl"
             >Kalenderio</span
@@ -50,7 +50,7 @@
         class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
       >
         <div class="flex items-center justify-between">
-          <a href="#" class="flex items-center gap-x-5">
+          <a href="/" class="flex items-center gap-x-5">
             <DynamicLogo />
             <span class="text-xl font-bold text-gray-900 md:text-2xl"
               >Kalenderio</span
@@ -92,19 +92,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Dialog, DialogPanel } from "@headlessui/vue";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import DynamicLogo from "@/components/DynamicLogo.vue";
 import store from "@/store";
-import { computed } from "vue";
+import { RouterLink } from "vue-router";
 
 const isLoggedIn = computed(() => store.getters.user.loggedIn);
 const avatar = computed(() => store.getters.user.data?.photoURL);
 
 const navigation = [
-  { name: "Kurse", href: "#" },
-  { name: "Profil", href: "#" },
+  { name: "Kurse", href: "/user" },
+  { name: "Profil", href: "/user" },
 ];
 
 const mobileMenuOpen = ref(false);
