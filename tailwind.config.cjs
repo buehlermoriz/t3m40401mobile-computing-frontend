@@ -1,11 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx,vue}",
-  ],
+  important: true,
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'color-sz': '#ffae00',
+        'color-nk': '#006689',
+        'color-sz-secondary': '#690a23',
+        'color-nk-secondary': '#191c1e',
+        'ms-danger': '#a70040',
+        'ms-black': '#071013',
+        'ms-white': '#ffffff'
+      },
+      boxShadow: {
+        'darkmode': '0 10px 15px -3px rgb(255 255 255 / 0.1), 0 4px 6px -4px rgb(255 255 255 / 0.1)'
+      },
+      height: {
+        'chat': 'h-full',
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+  darkMode: 'selector',
 }

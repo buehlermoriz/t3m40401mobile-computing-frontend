@@ -1,0 +1,234 @@
+@import "./base.css";
+
+.container {
+    margin-top: 200px;
+}
+
+.headline {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.input-icon {
+    border: none;
+    background-color: rgba(219, 62, 39, 0.70);
+    border-radius: 0;
+}
+
+.input-primary {
+    border: none;
+    border-bottom: 1px solid var(--primary);
+    color: #282828;
+    background-color: transparent;
+    border-radius: 0;
+    transition: 0.4s;
+}
+
+.input-primary:focus {
+    border-bottom: 1px solid var(--primary);
+    background-color: #d7d7d7;
+    color: #282828 !important;
+    transition: 0.4s;
+    box-shadow: none;
+}
+
+.button-primary,.btn-primary {
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary);
+    color: white;
+    transition: 0.4s;
+}
+
+.button-primary:hover,.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transition: 0.4s;
+}
+
+.btn-secondary {
+    --bs-btn-active-bg: var(--primary-press);
+    --bs-btn-active-border-color: none;
+    border: none;
+    color: white;
+    transition: 0.4s;
+}
+
+.button-primary:disabled,.btn-primary:disabled {
+    background-color: var(--primary-disabled);
+    color: white;
+    transition: 0.4s;
+}
+
+.button-primary-second {
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    background-color: white;
+    color: var(--primary);
+    transition: 0.4s;
+}
+
+.button-primary-second:hover {
+    background-color: var(--primary-second-hover);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    transition: 0.4s;
+}
+
+.button-primary-second:disabled {
+    background-color: var(--primary-second-disabled);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    transition: 0.4s;
+}
+
+.badge-info {
+    background-color: var(--info) !important;
+    color: white;
+}
+
+.badge-success {
+    background-color: var(--success) !important;
+    color: white;
+}
+
+.badge-error {
+    background-color: var(--error) !important;
+    color: white;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid var(--primary);
+    border-radius: 0;
+    background-color: transparent;
+    color: #282828;
+    transition: 0.4s;
+}
+
+.list-group-item:last-child {
+    border-radius: 0;
+}
+
+.list-group-item:first-child {
+    border-radius: 0;
+}
+
+.list-group-item:hover {
+    background-color: #d7d7d7;
+    color: #282828;
+    transition: 0.4s;
+}
+
+.Vue-Toastification__toast--info {
+    background-color: var(--info) !important;
+}
+
+.Vue-Toastification__progress-bar {
+    background-color: var(--white) !important;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.nav-link:hover {
+    transition: 0.4s;
+    color: var(--primary) !important;
+}
+
+.dropdown-item:hover {
+    transition: 0.4s;
+    color: var(--primary) !important;
+    background-color: transparent;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    transition: 0.4s;
+    color: var(--primary) !important;
+    background-color: transparent;
+}
+
+.router-link-exact-active {
+    color: var(--primary) !important;
+}
+
+.primary-link {
+    color: var(--primary) !important;
+    transition: 0.4s;
+    font-weight: bold;
+}
+
+.primary-link:hover {
+    color: var(--primary-hover) !important;
+    transition: 0.4s;
+}
+
+.primary-link:active {
+    color: var(--primary-press) !important;
+    transition: 0.4s;
+}
+
+.primary-select {
+    border: none;
+    border-bottom: 1px solid var(--primary);
+    color: #282828;
+    background-color: transparent;
+    border-radius: 0;
+    transition: 0.4s;
+}
+
+.primary-select:focus {
+    border-bottom: 1px solid var(--primary);
+    background-color: #d7d7d7;
+    color: #282828 !important;
+    transition: 0.4s;
+    box-shadow: none;
+}
+
+.primary-select option:checked {
+    background-color: var(--primary);
+    color: white;
+}
+
+.dropdown-primary .dropdown-toggle {
+    background-color: var(--primary);
+    color: white;
+    transition: 0.4s;
+}
+
+.dp__action_button {
+    padding-bottom: 25px !important;
+}
+
+.dp__action_select {
+    background-color: var(--primary) !important;
+}
+
+.dp__today {
+    /*background-color: var(--primary) !important;*/
+    border: 1px solid var(--primary) !important;
+}
+
+.dp__active_date {
+    background-color: var(--primary) !important;
+}
+
+.feedback_button{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; 
+    background-color: #db3e27;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+.muted_link{
+    text-decoration: none; 
+    color: #ababab;
+}
