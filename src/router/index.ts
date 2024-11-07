@@ -8,7 +8,7 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
-            component: () => import("@/views/YearCallendar.vue"),
+            component: () => import("@/views/Home.vue"),
             meta: {
                 title: "Home",
                 requiresAuth: true
