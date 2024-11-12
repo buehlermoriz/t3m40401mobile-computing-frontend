@@ -14,11 +14,13 @@ import {
 } from "firebase/firestore";
 import {
   createStore,
-  StoreOptions,
+} from "vuex";
+import type {
+  ActionContext,
+  ActionTree,
   GetterTree,
   MutationTree,
-  ActionTree,
-  ActionContext,
+  StoreOptions,
 } from "vuex";
 import { errorTranslateMap } from "@/config/ErrorMap";
 
