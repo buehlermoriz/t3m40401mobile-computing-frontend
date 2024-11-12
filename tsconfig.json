@@ -11,8 +11,6 @@
       "path": "./tsconfig.cypress-ct.json"
     }
   ],
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
