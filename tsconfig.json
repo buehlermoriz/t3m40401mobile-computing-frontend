@@ -12,6 +12,14 @@
     }
   ],
   "compilerOptions": {
-    "module": "NodeNext"
-  }
+    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "esnext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "skipLibCheck": true,
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }
