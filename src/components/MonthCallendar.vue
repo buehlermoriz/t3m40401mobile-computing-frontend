@@ -90,7 +90,7 @@
     MapPinIcon,
   } from '@heroicons/vue/20/solid'
   import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-  import { defineProps, ref, onMounted } from 'vue'
+  import { defineProps, ref, watch } from 'vue'
   import { getMonth } from '@/services/CallendarService'
   
   const props = defineProps({
@@ -127,7 +127,15 @@ const month = ref()
     // More meetings...
   ]
 
-  onMounted(() => {
-  month.value = getMonth(props.selectedYear, props.selectedMonth)
-})
+  const loadMonth = () => {
+  month.value = getMonth(props.selectedYear, props.selectedMonth);
+};
+
+watch(
+  () => [props.selectedYear, props.selectedMonth],
+  () => {
+    loadMonth();
+  },
+  { immediate: true }
+);
   </script>

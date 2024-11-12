@@ -6,19 +6,19 @@
       <div class="flex items-center">
         <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
           <button @click="selectedYear-=1" type="button" class="flex h-9 w-12 items-center justify-center rounded-l-md border-y border-l border-gray-300 pr-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pr-0 md:hover:bg-gray-50">
-            <span class="sr-only">Previous year</span>
+            <span class="sr-only">Previous Year</span>
             <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
           </button>
           <span class="relative -mx-px h-5 w-px bg-gray-300 md:hidden" />
           <button @click="selectedYear+=1" type="button" class="flex h-9 w-12 items-center justify-center rounded-r-md border-y border-r border-gray-300 pl-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pl-0 md:hover:bg-gray-50">
-            <span class="sr-only">Next year</span>
+            <span class="sr-only">Next Year</span>
             <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
         <div class="hidden md:ml-4 md:flex md:items-center">
           <Menu as="div" class="relative">
             <MenuButton type="button" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-              Year view
+              {{view}} view
               <ChevronDownIcon class="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
             </MenuButton>
 
@@ -26,10 +26,10 @@
               <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1">
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
+                    <div @click="view='Month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
+                    <div @click="view='Year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
                   </MenuItem>
                 </div>
               </MenuItems>
@@ -53,10 +53,10 @@
               </div>
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
-                    <div @click="view='month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
+                    <div @click="view='Month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
+                    <div @click="view='Year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
                   </MenuItem>
               </div>
             </MenuItems>
@@ -64,8 +64,8 @@
         </Menu>
       </div>
     </header>
-  <YearCallendar v-if="view == 'year'" :selectedYear="selectedYear" @selectedDate="handleDateSelected()"/>
-  <MonthCallendar v-if="view == 'month'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
+  <YearCallendar v-if="view == 'Year'" :selectedYear="selectedYear" @dateSelected="handleDateSelected"/>
+  <MonthCallendar v-if="view == 'Month'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
 </template>
 
 <script setup>
@@ -77,13 +77,13 @@ import { ref } from 'vue'
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth())
 const selectedDay = ref(new Date().getDate())
-const view = ref('year')
+const view = ref('Year')
 
-const handleDateSelected = ({ day, month }) => {
-  selectedMonth.value = month
-  selectedDay.value = day
+const handleDateSelected = ({ dayOfDate, monthIndex }) => {
+  selectedMonth.value = monthIndex
+  selectedDay.value = dayOfDate
 
-  view.value = 'month'
+  view.value = 'Month'
 }
 
 </script>

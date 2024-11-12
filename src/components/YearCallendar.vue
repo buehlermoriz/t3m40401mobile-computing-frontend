@@ -4,7 +4,7 @@
       <div
         class="mx-auto grid max-w-3xl grid-cols-1 gap-x-8 gap-y-16 px-4 py-16 sm:grid-cols-2 sm:px-6 xl:max-w-none xl:grid-cols-3 xl:px-8 2xl:grid-cols-4"
       >
-        <section v-for="month in months" :key="month.name" class="text-center">
+        <section v-for="(month, monthIndex) in months" :key="month.name" class="text-center">
           <h2 class="text-sm font-semibold text-gray-900">{{ month.name }}</h2>
           <div class="mt-6 grid grid-cols-7 text-xs/6 text-gray-500">
             <div>M</div>
@@ -21,7 +21,7 @@
             <button
               v-for="(day, dayIdx) in month.days"
               :key="day.date"
-              @click="emitDate(day.date, month.name)"
+              @click="emitDate(day.date, monthIndex)"
               type="button"
               :class="[
                 day.isCurrentMonth
@@ -65,9 +65,9 @@ const emit = defineEmits(["dateSelected"]);
 
 const months = ref([]);
 
-const emitDate = (day, month) => {
+const emitDate = (day, monthIndex) => {
   const dayOfDate = day.split("-").pop().replace(/^0/, "");
-  emit("dateSelected", { dayOfDate, month });
+  emit("dateSelected", { dayOfDate, monthIndex });
 };
 
 watch(
