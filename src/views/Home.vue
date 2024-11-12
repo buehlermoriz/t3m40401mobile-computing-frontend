@@ -71,8 +71,8 @@
 <script setup>
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/vue/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import  YearCallendar  from '../components/YearCallendar.vue'
-import MonthCallendar from '../components/MonthCallendar.vue'
+import  YearCallendar  from '@/components/YearCallendar.vue'
+import MonthCallendar from '@/components/MonthCallendar.vue'
 import { ref } from 'vue'
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth())
