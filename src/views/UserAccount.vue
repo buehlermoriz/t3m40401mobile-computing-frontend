@@ -103,7 +103,7 @@ async function linkToSso() {
         class="mx-auto  max-w-none  bg-gray-700/5 px-6 py-16 ring-1  ring-gray-500/10 rounded-3xl sm:p-8 lg:mx-0 lg:py-16 xl:px-20">
         <h2 class="text-lg font-bold tracking-tight  sm:text-2xl">SSO einrichten!</h2>
         <p class="mt-6 leading-8 ">Ihr Account besitzt noch keine Verbindung zu unserem SSO System.
-          Klicken Sie auf jetzt verbinden und nutzen Sie zukünftig direkt den SV Gruppe SSO Login ganz ohne Eingabe von
+          Klicken Sie auf jetzt verbinden und nutzen Sie zukünftig direkt den Google SSO Login ganz ohne Eingabe von
           Emailadresse und Passwort!</p>
         <button @click="linkToSso"
           class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white bg-primary dark:bg-color-nk mt-3">

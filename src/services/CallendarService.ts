@@ -21,7 +21,7 @@ export const getMonth = (year: number, monthIndex: number) => {
 
   while (date <= endDate) {
     const dateString = date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' format
-    const isCurrentMonth = date.getMonth() === monthIndex;
+    const isCurrentMonth =  date.getMonth() === monthIndex;
     const isToday = date.toDateString() === today.toDateString();
 
     const dayObject: any = { date: dateString };

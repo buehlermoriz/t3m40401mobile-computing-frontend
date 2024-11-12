@@ -64,8 +64,8 @@
         </Menu>
       </div>
     </header>
-  <YearCallendar v-if="view == 'year'" :selectedYear="selectedYear"/>
-  <MonthCallendar v-if="view == 'month'" :selectedYear="selectedYear"/>
+  <YearCallendar v-if="view == 'year'" :selectedYear="selectedYear" @selectedDate="handleDateSelected()"/>
+  <MonthCallendar v-if="view == 'month'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
 </template>
 
 <script setup>
@@ -75,7 +75,15 @@ import  YearCallendar  from '../components/YearCallendar.vue'
 import MonthCallendar from '../components/MonthCallendar.vue'
 import { ref } from 'vue'
 const selectedYear = ref(new Date().getFullYear())
+const selectedMonth = ref(new Date().getMonth())
+const selectedDay = ref(new Date().getDate())
 const view = ref('year')
 
+const handleDateSelected = ({ day, month }) => {
+  selectedMonth.value = month
+  selectedDay.value = day
+
+  view.value = 'month'
+}
 
 </script>
