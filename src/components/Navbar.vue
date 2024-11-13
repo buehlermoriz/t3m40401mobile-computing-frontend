@@ -105,6 +105,7 @@ const avatar = computed(() => store.getters.user.data?.photoURL);
 const navigation = [
   { name: "Kurse", href: "/user" },
   { name: "Profil", href: "/user" },
+  { name: "New Event", href: "/new-event" },
 ];
 
 const mobileMenuOpen = ref(false);

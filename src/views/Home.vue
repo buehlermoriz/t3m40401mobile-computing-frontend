@@ -48,7 +48,7 @@
             <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Create event</a>
+                  <RouterLink to="/new-event" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Create event</RouterLink>
                 </MenuItem>
               </div>
               <div class="py-1">
@@ -74,6 +74,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import  YearCallendar  from '@/components/YearCallendar.vue'
 import MonthCallendar from '@/components/MonthCallendar.vue'
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth())
 const selectedDay = ref(new Date().getDate())

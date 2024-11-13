@@ -33,6 +33,15 @@ const router = createRouter({
             },
         },
         {
+            path: "/new-event",
+            name: "new Event",
+            component: () => import("@/views/NewEvent.vue"),
+            meta: {
+                title: "new Event",
+                requiresAuth: true
+            },
+        },
+        {
             path: "/sign-up",
             name: "sign-up",
             component: () => import("@/views/SignUp.vue"),
