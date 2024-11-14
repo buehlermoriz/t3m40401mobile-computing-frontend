@@ -98,7 +98,7 @@ onMounted(() => {
         </div>
         <div>
           <button type="submit" :disabled="!meta.valid"
-            :class="meta.valid ? 'bg-primary dark:bg-color-nk' : 'bg-primary dark:bg-color-nk opacity-50 cursor-not-allowed'"
+            :class="meta.valid ? 'bg-primary' : 'bg-primary opacity-50 cursor-not-allowed'"
             class="flex w-full justify-center rounded-md px-3 p-1.5 text-sm font-semibold leading-6 text-ms-white">
             Anmelden
           </button>
@@ -106,7 +106,7 @@ onMounted(() => {
       </form>
       <button
       @click="loginSso()"
-            class="mt-4 ring-2 ring-primary dark:ring-color-nk flex justify-center gap-x-2 items-center w-full  rounded-md px-3 font-semibold p-1.5 text-sm leading-6 text-primary dark:text-color-nk"
+            class="mt-4 ring-2 ring-primary flex justify-center gap-x-2 items-center w-full  rounded-md px-3 font-semibold p-1.5 text-sm leading-6 text-primary dark:text-color-nk"
            >
             Google SSO
           </button>

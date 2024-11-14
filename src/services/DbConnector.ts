@@ -39,3 +39,21 @@ export async function getTrainingTypes(): Promise<any> {
     }
   }
 }
+
+export async function getCategories(): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const response = await api.get('/trainingcategories/', { headers });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getCategories();
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
