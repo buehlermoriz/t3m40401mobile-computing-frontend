@@ -76,7 +76,6 @@
         <label for="text" class="block text-sm/6 font-medium text-gray-900"
           > Name</label
         >
-
         <div class="mb-2">
           <input
             v-model="ttName"
@@ -246,6 +245,87 @@
         </div>
         <button @click="selectedTrainingType=null" class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary">Remove Choice</button>
       </div>
+      <!-- Training -->
+       <div id="training">
+      <h2 class="text-base/7 font-semibold text-gray-900">Training</h2>
+      <label for="text" class="block text-sm/6 font-medium text-gray-900"
+          > Notes</label
+        >
+        <div class="mb-2">
+          <input
+            v-model="tNotes"
+            type="text"
+            name="tNotes"
+            id="tNotes"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+          />
+        </div>
+        <label for="tNotes" class="text-sm/6 text-gray-600">These are Notes specific to 1 Training</label>
+      </div>
+      <!-- Timeblocks -->
+<!-- Timeblocks -->
+<div class="timeblocks mt-6">
+  <h2 class="text-base font-semibold text-gray-900">Timeblocks</h2>
+
+  <!-- Start Date -->
+  <label for="tbStart" class="block text-sm font-medium text-gray-900 mt-2"
+    >Start Date</label
+  >
+  <div class="mb-2">
+    <input
+      v-model="tbStart"
+      type="date"
+      name="tbStart"
+      id="tbStart"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+    />
+  </div>
+
+  <!-- End Date -->
+  <label for="tbEnd" class="block text-sm font-medium text-gray-900"
+    >End Date</label
+  >
+  <div class="mb-2">
+    <input
+      v-model="tbEnd"
+      type="date"
+      name="tbEnd"
+      id="tbEnd"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+    />
+  </div>
+
+  <!-- Add Timeblock Button -->
+  <button
+    @click="addTimeblock"
+    class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+  >
+    Add Timeblock
+  </button>
+
+  <!-- List of Timeblocks -->
+  <div v-if="timeblocks.length" class="mt-4">
+    <h3 class="text-sm font-medium text-gray-900">Added Timeblocks</h3>
+    <ul>
+      <li
+        v-for="(timeblock, index) in timeblocks"
+        :key="index"
+        class="flex items-center justify-between py-2 border-b border-gray-200"
+      >
+        <span class="text-sm text-gray-700"
+          >  {{ formatDate(timeblock.start) }} - {{ formatDate(timeblock.end) }}
+          </span
+        >
+        <button
+          @click="removeTimeblock(index)"
+          class="text-sm text-red-500 hover:underline"
+        >
+          <TrashIcon class="h-5 w-5 mr-1" aria-hidden="true" />
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
     </div>
   </div>
 </template>
@@ -292,6 +372,46 @@ const ttCategory = ref<number>();
 const ttMaxParticipants = ref<number>();
 const ttMinParticipants = ref<number>();
 const ttRequirements = ref<string>();
+
+// Params training
+const tNotes = ref<string>()
+
+// Params timeblocks
+
+interface Timeblock {
+  start: string;
+  end: string;
+}
+
+const timeblocks = ref<Timeblock[]>([]);
+const tbStart = ref<string>('');
+const tbEnd = ref<string>('');
+
+function addTimeblock() {
+  if (tbStart.value && tbEnd.value) {
+    const newTimeblock: Timeblock = {
+      start: `${tbStart.value}T00:00:00+01:00`,
+      end: `${tbEnd.value}T00:00:00+01:00`,
+    };
+    timeblocks.value.push(newTimeblock);
+    tbStart.value = '';
+    tbEnd.value = '';
+  } else {
+    alert('Please select both start and end dates.');
+  }
+}
+
+function formatDate(datetimeStr: string): string {
+  const date = new Date(datetimeStr);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+function removeTimeblock(index: number) {
+  timeblocks.value.splice(index, 1);
+}
 
 //logic  TrainingType ---------
 const queryTrainingType = ref("");
