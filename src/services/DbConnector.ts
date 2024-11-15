@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toRaw } from 'vue';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_MIDDLEWARE_URL
@@ -119,6 +120,32 @@ export const newTrainingTimeBlock = async (start:string, end:string): Promise<nu
       end: end,
     }
     const response = await api.post('/timeblocks/', body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getCategories();
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
+
+export const newTraining = async (trainingTypeId:number, timeblocks:number[], notes: string, selectedTeacher: number): Promise<number>  => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      notes: notes,
+      type: trainingTypeId,
+      blocks: toRaw(timeblocks),
+      participants: [
+        selectedTeacher
+      ]
+    }
+    const response = await api.post('/trainings/', body, { headers });
     return response.data.id;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {

@@ -277,8 +277,8 @@
           <Combobox
             class="flex-1 border-gray-900/10"
             as="div"
-            v-model="selectedTeacherType"
-            @update:modelValue="queryTeacherType = ''"
+            v-model="selectedTeacher"
+            @update:modelValue="queryTeacher = ''"
           >
             <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
               >Teacher
@@ -286,9 +286,9 @@
             <div class="relative">
               <ComboboxInput
                 class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
-                @change="queryTeacherType = $event.target.value"
-                @blur="queryTeacherType = ''"
-                :display-value="(teacherType) => ((teacherType as Teacher)?.name)"
+                @change="queryTeacher = $event.target.value"
+                @blur="queryTeacher = ''"
+                :display-value="(teacher) => ((teacher as Teacher)?.name)"
               />
               <ComboboxButton
                 class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
@@ -300,13 +300,13 @@
               </ComboboxButton>
             </div>
             <ComboboxOptions
-              v-if="filteredTeacherType.length > 0"
+              v-if="filteredTeacher.length > 0"
               class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             >
               <ComboboxOption
-                v-for="(teacherType, index) in filteredTeacherType"
+                v-for="(teacher, index) in filteredTeacher"
                 :key="index"
-                :value="teacherType"
+                :value="teacher"
                 as="template"
                 v-slot="{ active, selected }"
               >
@@ -318,7 +318,7 @@
                 >
                   <span class="block truncate">
                     <span :class="{ 'font-semibold': selected }">{{
-                      teacherType.name
+                      teacher.name
                     }}</span>
                   </span>
 
@@ -375,7 +375,7 @@
         <!-- Add Timeblock Button -->
         <button
           @click="addTimeblock"
-          class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+          class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary"
         >
           Add Timeblock
         </button>
@@ -436,7 +436,11 @@ import {
   getUser,
   newTrainingType,
   newTrainingTimeBlock,
+  newTraining,
 } from "@/services/DbConnector";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 //Interfaces ---------
 interface TrainingType {
@@ -551,24 +555,24 @@ const filteredCategoryType = computed<Category[]>(() => {
   return filteredCategoryType; // Return the filtered array
 });
 
-const teacherTypes = ref<Teacher[]>([]);
+const teachers = ref<Teacher[]>([]);
 
-//logic  TeacherType ---------
-const queryTeacherType = ref("");
-const selectedTeacherType = ref<Teacher | null>(null);
-const filteredTeacherType = computed<Teacher[]>(() => {
-  let filteredTeacherType = teacherTypes.value; // Start with all teacherTypes
+//logic  Teacher ---------
+const queryTeacher = ref("");
+const selectedTeacher = ref<Teacher | null>(null);
+const filteredTeacher = computed<Teacher[]>(() => {
+  let filteredTeacher = teachers.value; // Start with all teachers
 
-  // filter by queryTeacherType
-  if (queryTeacherType.value !== "") {
-    filteredTeacherType = filteredTeacherType.filter((teacherType) =>
-      teacherType.name
+  // filter by queryTeacher
+  if (queryTeacher.value !== "") {
+    filteredTeacher = filteredTeacher.filter((teacher) =>
+      teacher.name
         .toLowerCase()
-        .includes(queryTeacherType.value.toLowerCase())
+        .includes(queryTeacher.value.toLowerCase())
     );
   }
 
-  return filteredTeacherType; // Return the filtered array
+  return filteredTeacher; // Return the filtered array
 });
 
 // variables create Event
@@ -605,7 +609,8 @@ const createEvent = async () => {
   if (timeblocks.value.length !== 0) {
     for (const timeblock of timeblocks.value) {
       // Create timeblock
-      timeBlockIds.value.push(await newTrainingTimeBlock(timeblock.start, timeblock.end));
+      const newTimeblockId = await newTrainingTimeBlock(timeblock.start, timeblock.end);
+      timeBlockIds.value.push(newTimeblockId);
     }
   }
   else{
@@ -613,13 +618,18 @@ const createEvent = async () => {
     return;
   }
   // STEP 3: Create training
-  // await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value);
+  const response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, selectedTeacher.value!.id);
+  if (typeof response === "number") {
+    router.push({ path: 'success' })
+  } else {
+    alert("Fehler beim Erstellen des Trainings");
+  }
 
 };
 
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
   categoryTypes.value = await getCategories();
-  teacherTypes.value = await getUser(2);
+  teachers.value = await getUser(2);
 });
 </script>
