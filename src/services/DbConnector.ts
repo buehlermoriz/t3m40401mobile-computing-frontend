@@ -6,6 +6,8 @@ const api = axios.create({
 
 export default api;
 
+// HELPER ------------------------------------------------------------------------
+
 export async function generateToken(): Promise<void> {
   try {
     const body = {
@@ -21,6 +23,8 @@ export async function generateToken(): Promise<void> {
     throw error;
   }
 }
+
+// GET ------------------------------------------------------------------------
 
 export async function getTrainingTypes(): Promise<any> {
   try {
@@ -57,6 +61,27 @@ export async function getCategories(): Promise<any> {
     }
   }
 }
+
+export async function getUser(role?: number): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const params = role ? { role } : {};
+    const response = await api.get('/users/', { headers, params });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getCategories();
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
+
+// POST ------------------------------------------------------------------------
 
 export const newTrainingType = async (name:string, description:string, category:number, maxParticipants:number, minParticipants:number, requirements:string): Promise<number>  => {
   try {

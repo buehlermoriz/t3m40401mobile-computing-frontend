@@ -272,6 +272,70 @@
         <label for="tNotes" class="text-sm/6 text-gray-600"
           >These are Notes specific to 1 Training</label
         >
+                <!-- teacher -->
+                <div class="relative">
+          <Combobox
+            class="flex-1 border-gray-900/10"
+            as="div"
+            v-model="selectedTeacherType"
+            @update:modelValue="queryTeacherType = ''"
+          >
+            <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
+              >Teacher
+            </ComboboxLabel>
+            <div class="relative">
+              <ComboboxInput
+                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+                @change="queryTeacherType = $event.target.value"
+                @blur="queryTeacherType = ''"
+                :display-value="(teacherType) => ((teacherType as Teacher)?.name)"
+              />
+              <ComboboxButton
+                class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+              >
+                <ChevronUpDownIcon
+                  class="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </ComboboxButton>
+            </div>
+            <ComboboxOptions
+              v-if="filteredTeacherType.length > 0"
+              class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            >
+              <ComboboxOption
+                v-for="(teacherType, index) in filteredTeacherType"
+                :key="index"
+                :value="teacherType"
+                as="template"
+                v-slot="{ active, selected }"
+              >
+                <li
+                  :class="[
+                    'relative cursor-default select-none py-2 pl-8 pr-4',
+                    active ? 'bg-primary text-white' : 'text-gray-900',
+                  ]"
+                >
+                  <span class="block truncate">
+                    <span :class="{ 'font-semibold': selected }">{{
+                      teacherType.name
+                    }}</span>
+                  </span>
+
+                  <span
+                    v-if="selected"
+                    :class="[
+                      'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                      active ? 'text-white' : 'text-gray-500',
+                    ]"
+                  >
+                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </li>
+              </ComboboxOption>
+            </ComboboxOptions>
+          </Combobox>
+        </div>
       </div>
       <!-- Timeblocks -->
       <!-- Timeblocks -->
@@ -369,6 +433,7 @@ import {
 import {
   getTrainingTypes,
   getCategories,
+  getUser,
   newTrainingType,
   newTrainingTimeBlock,
 } from "@/services/DbConnector";
@@ -388,6 +453,16 @@ interface Category {
   id: number;
   name: string;
 }
+
+interface Teacher {
+  id: number;
+  name: string;
+  uid: string;
+  email: string;
+  role: number;
+  birthDate: string;
+}
+
 const trainingTypes = ref<TrainingType[]>([]);
 
 // Params trainingType
@@ -476,6 +551,26 @@ const filteredCategoryType = computed<Category[]>(() => {
   return filteredCategoryType; // Return the filtered array
 });
 
+const teacherTypes = ref<Teacher[]>([]);
+
+//logic  TeacherType ---------
+const queryTeacherType = ref("");
+const selectedTeacherType = ref<Teacher | null>(null);
+const filteredTeacherType = computed<Teacher[]>(() => {
+  let filteredTeacherType = teacherTypes.value; // Start with all teacherTypes
+
+  // filter by queryTeacherType
+  if (queryTeacherType.value !== "") {
+    filteredTeacherType = filteredTeacherType.filter((teacherType) =>
+      teacherType.name
+        .toLowerCase()
+        .includes(queryTeacherType.value.toLowerCase())
+    );
+  }
+
+  return filteredTeacherType; // Return the filtered array
+});
+
 // variables create Event
 const trainingTypeId = ref<number>();
 const timeBlockIds = ref<number[]>([]);
@@ -525,5 +620,6 @@ const createEvent = async () => {
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
   categoryTypes.value = await getCategories();
+  teacherTypes.value = await getUser(2);
 });
 </script>
