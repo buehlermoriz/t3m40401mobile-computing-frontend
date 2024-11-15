@@ -73,6 +73,15 @@ const router = createRouter({
                 title: 'Benutzer Konto',
                 requiresAuth: true
             }
+        },
+        {
+            path: '/success',
+            name: 'success',
+            component: () => import('@/views/Success.vue'),
+            meta: {
+                title: 'Success',
+                requiresAuth: true
+            }
         }
     ]
 })
