@@ -124,8 +124,8 @@
           <Combobox
             class="flex-1 border-gray-900/10"
             as="div"
-            v-model="selectedCategoryType"
-            @update:modelValue="queryCategoryType = ''"
+            v-model="selectedCategory"
+            @update:modelValue="queryCategory = ''"
           >
             <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
               >Category
@@ -133,9 +133,9 @@
             <div class="relative">
               <ComboboxInput
                 class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
-                @change="queryCategoryType = $event.target.value"
-                @blur="queryCategoryType = ''"
-                :display-value="(categoryType) => ((categoryType as Category)?.name)"
+                @change="queryCategory = $event.target.value"
+                @blur="queryCategory = ''"
+                :display-value="(category) => ((category as Category)?.name)"
               />
               <ComboboxButton
                 class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
@@ -147,13 +147,13 @@
               </ComboboxButton>
             </div>
             <ComboboxOptions
-              v-if="filteredCategoryType.length > 0"
+              v-if="filteredCategory.length > 0"
               class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             >
               <ComboboxOption
-                v-for="(categoryType, index) in filteredCategoryType"
+                v-for="(category, index) in filteredCategory"
                 :key="index"
-                :value="categoryType"
+                :value="category"
                 as="template"
                 v-slot="{ active, selected }"
               >
@@ -165,7 +165,7 @@
                 >
                   <span class="block truncate">
                     <span :class="{ 'font-semibold': selected }">{{
-                      categoryType.name
+                      category.name
                     }}</span>
                   </span>
 
@@ -472,7 +472,6 @@ const trainingTypes = ref<TrainingType[]>([]);
 // Params trainingType
 const ttName = ref<string>();
 const ttDescription = ref<string>();
-const ttCategory = ref<number>();
 const ttMaxParticipants = ref<number>();
 const ttMinParticipants = ref<number>();
 const ttRequirements = ref<string>();
@@ -535,24 +534,24 @@ const filteredTrainingType = computed<TrainingType[]>(() => {
   return filteredTrainingType; // Return the filtered array
 });
 
-const categoryTypes = ref<Category[]>([]);
+const categorys = ref<Category[]>([]);
 
-//logic  CategoryType ---------
-const queryCategoryType = ref("");
-const selectedCategoryType = ref<Category | null>(null);
-const filteredCategoryType = computed<Category[]>(() => {
-  let filteredCategoryType = categoryTypes.value; // Start with all categoryTypes
+//logic  Category ---------
+const queryCategory = ref("");
+const selectedCategory = ref<Category | null>(null);
+const filteredCategory = computed<Category[]>(() => {
+  let filteredCategory = categorys.value; // Start with all categorys
 
-  // filter by queryCategoryType
-  if (queryCategoryType.value !== "") {
-    filteredCategoryType = filteredCategoryType.filter((categoryType) =>
-      categoryType.name
+  // filter by queryCategory
+  if (queryCategory.value !== "") {
+    filteredCategory = filteredCategory.filter((category) =>
+      category.name
         .toLowerCase()
-        .includes(queryCategoryType.value.toLowerCase())
+        .includes(queryCategory.value.toLowerCase())
     );
   }
 
-  return filteredCategoryType; // Return the filtered array
+  return filteredCategory; // Return the filtered array
 });
 
 const teachers = ref<Teacher[]>([]);
@@ -585,7 +584,7 @@ const createEvent = async () => {
     if (
       ttName.value &&
       ttDescription.value &&
-      ttCategory &&
+      selectedCategory &&
       ttMaxParticipants &&
       ttMinParticipants &&
       ttRequirements.value
@@ -593,7 +592,7 @@ const createEvent = async () => {
       trainingTypeId.value = await newTrainingType(
         ttName.value,
         ttDescription.value,
-        ttCategory.value!,
+        selectedCategory.value!.id,
         ttMaxParticipants.value!,
         ttMinParticipants.value!,
         ttRequirements.value
@@ -629,7 +628,7 @@ const createEvent = async () => {
 
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
-  categoryTypes.value = await getCategories();
+  categorys.value = await getCategories();
   teachers.value = await getUser(2);
 });
 </script>
