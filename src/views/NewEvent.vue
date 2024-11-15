@@ -340,11 +340,11 @@
         </div>
         <!-- send it -->
         <button
-    @click="createEvent"
-    class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-  >
-    Create event
-  </button>
+          @click="createEvent"
+          class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+        >
+          Create event
+        </button>
       </div>
     </div>
   </div>
@@ -366,7 +366,12 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/vue";
-import { getTrainingTypes, getCategories, newTrainingType } from "@/services/DbConnector";
+import {
+  getTrainingTypes,
+  getCategories,
+  newTrainingType,
+  newTrainingTimeBlock,
+} from "@/services/DbConnector";
 
 //Interfaces ---------
 interface TrainingType {
@@ -471,9 +476,13 @@ const filteredCategoryType = computed<Category[]>(() => {
   return filteredCategoryType; // Return the filtered array
 });
 
+// variables create Event
+const trainingTypeId = ref<number>();
+const timeBlockIds = ref<number[]>([]);
 
 const createEvent = async () => {
-  if (!selectedTrainingType) {
+  // STEP 1: Create or select training type
+  if (!selectedTrainingType.value) {
     if (
       ttName.value &&
       ttDescription.value &&
@@ -482,22 +491,35 @@ const createEvent = async () => {
       ttMinParticipants &&
       ttRequirements.value
     ) {
-      newTrainingType (
-
+      trainingTypeId.value = await newTrainingType(
         ttName.value,
         ttDescription.value,
-         ttCategory.value!,
+        ttCategory.value!,
         ttMaxParticipants.value!,
-         ttMinParticipants.value!,
-         ttRequirements.value,
-      )
+        ttMinParticipants.value!,
+        ttRequirements.value
+      );
     } else {
       alert("Please fill out all training type fields.");
       return;
     }
   } else {
-    alert("Please select a training type.");
+    trainingTypeId.value = selectedTrainingType.value.id;
   }
+  // STEP 2: Create timeblocks
+  if (timeblocks.value.length !== 0) {
+    for (const timeblock of timeblocks.value) {
+      // Create timeblock
+      timeBlockIds.value.push(await newTrainingTimeBlock(timeblock.start, timeblock.end));
+    }
+  }
+  else{
+    alert("Please add at least one timeblock.");
+    return;
+  }
+  // STEP 3: Create training
+  // await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value);
+
 };
 
 onMounted(async () => {

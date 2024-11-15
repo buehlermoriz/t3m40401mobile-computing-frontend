@@ -58,7 +58,7 @@ export async function getCategories(): Promise<any> {
   }
 }
 
-export const newTrainingType = async (name:string, description:string, category:number, maxParticipants:number, minParticipants:number, requirements:string) => {
+export const newTrainingType = async (name:string, description:string, category:number, maxParticipants:number, minParticipants:number, requirements:string): Promise<number>  => {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
@@ -72,6 +72,28 @@ export const newTrainingType = async (name:string, description:string, category:
       requirements: requirements
     }
     const response = await api.post('/trainingtypes/', body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getCategories();
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
+
+export const newTrainingTimeBlock = async (start:string, end:string): Promise<number>  => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      start: start,
+      end: end,
+    }
+    const response = await api.post('/timeblocks/', body, { headers });
     return response.data.id;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
