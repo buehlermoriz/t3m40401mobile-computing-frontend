@@ -5,76 +5,76 @@
         Erstellen Sie ein neues Event
       </h2>
       <!-- Ausgabe -->
-       <div class="relative">
-      <Combobox
-        class="flex-1 my-5 pb-5 border-b border-gray-900/10"
-        as="div"
-        v-model="selectedTrainingType"
-        @update:modelValue="queryTrainingType = ''"
-      >
-        <ComboboxLabel class="">Vorlesungsart </ComboboxLabel>
-        <div class="relative mt-2">
-          <ComboboxInput
-            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
-            @change="queryTrainingType = $event.target.value"
-            @blur="queryTrainingType = ''"
-            :display-value="(trainingType) => ((trainingType as TrainingType)?.name)"
-          />
-          <ComboboxButton
-            class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
-          >
-            <ChevronUpDownIcon
-              class="h-5 w-5 text-gray-400"
-              aria-hidden="true"
+      <div class="relative">
+        <Combobox
+          class="flex-1 my-5 pb-5 border-b border-gray-900/10"
+          as="div"
+          v-model="selectedTrainingType"
+          @update:modelValue="queryTrainingType = ''"
+        >
+          <ComboboxLabel class="">Vorlesungsart </ComboboxLabel>
+          <div class="relative mt-2">
+            <ComboboxInput
+              class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+              @change="queryTrainingType = $event.target.value"
+              @blur="queryTrainingType = ''"
+              :display-value="(trainingType) => ((trainingType as TrainingType)?.name)"
             />
-          </ComboboxButton>
-          <ComboboxOptions
-            v-if="filteredTrainingType.length > 0"
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-          >
-            <ComboboxOption
-              v-for="(trainingType, index) in filteredTrainingType"
-              :key="index"
-              :value="trainingType"
-              as="template"
-              v-slot="{ active, selected }"
+            <ComboboxButton
+              class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
             >
-              <li
-                :class="[
-                  'relative cursor-default select-none py-2 pl-8 pr-4',
-                  active ? 'bg-primary text-white' : 'text-gray-900',
-                ]"
+              <ChevronUpDownIcon
+                class="h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+            </ComboboxButton>
+            <ComboboxOptions
+              v-if="filteredTrainingType.length > 0"
+              class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            >
+              <ComboboxOption
+                v-for="(trainingType, index) in filteredTrainingType"
+                :key="index"
+                :value="trainingType"
+                as="template"
+                v-slot="{ active, selected }"
               >
-                <span class="block truncate">
-                  <span :class="{ 'font-semibold': selected }">{{
-                    trainingType.name
-                  }}</span>
-                </span>
-
-                <span
-                  v-if="selected"
+                <li
                   :class="[
-                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                    active ? 'text-white' : 'text-gray-500',
+                    'relative cursor-default select-none py-2 pl-8 pr-4',
+                    active ? 'bg-primary text-white' : 'text-gray-900',
                   ]"
                 >
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span>
-              </li>
-            </ComboboxOption>
-          </ComboboxOptions>
-        </div>
-        <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
-          >Choose an exisiting Trainingtype or generate a new one bellow.
-        </ComboboxLabel>
-      </Combobox>
-    </div>
+                  <span class="block truncate">
+                    <span :class="{ 'font-semibold': selected }">{{
+                      trainingType.name
+                    }}</span>
+                  </span>
+
+                  <span
+                    v-if="selected"
+                    :class="[
+                      'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                      active ? 'text-white' : 'text-gray-500',
+                    ]"
+                  >
+                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </li>
+              </ComboboxOption>
+            </ComboboxOptions>
+          </div>
+          <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
+            >Choose an exisiting Trainingtype or generate a new one bellow.
+          </ComboboxLabel>
+        </Combobox>
+      </div>
       <!-- Trainingtype -->
-       <h2 class="text-base/7 font-semibold text-gray-900">TrainingType</h2>
+      <h2 class="text-base/7 font-semibold text-gray-900">TrainingType</h2>
       <div id="trainingtypes" v-if="!selectedTrainingType">
         <!-- ttName -->
-        <label for="text" class="block text-sm/6 font-medium text-gray-900"
-          > Name</label
+        <label for="text" class="block text-sm/6 font-medium text-gray-900">
+          Name</label
         >
         <div class="mb-2">
           <input
@@ -89,7 +89,8 @@
         <label
           for="ttDescription"
           class="block text-sm/6 font-medium text-gray-900"
-          > description</label
+        >
+          description</label
         >
 
         <div class="mb-2">
@@ -105,7 +106,8 @@
         <label
           for="ttRequirements"
           class="block text-sm/6 font-medium text-gray-900"
-          > requirements</label
+        >
+          requirements</label
         >
 
         <div class="mb-2">
@@ -118,75 +120,77 @@
           />
         </div>
         <!-- ttCategory -->
-         <div class="relative">
-        <Combobox
-        class="flex-1 border-gray-900/10"
-        as="div"
-        v-model="selectedCategoryType"
-        @update:modelValue="queryCategoryType = ''"
-      >
-        <ComboboxLabel class="block text-sm/6 font-medium text-gray-900">Category </ComboboxLabel>
         <div class="relative">
-          <ComboboxInput
-            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
-            @change="queryCategoryType = $event.target.value"
-            @blur="queryCategoryType = ''"
-            :display-value="(categoryType) => ((categoryType as Category)?.name)"
-          />
-          <ComboboxButton
-            class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+          <Combobox
+            class="flex-1 border-gray-900/10"
+            as="div"
+            v-model="selectedCategoryType"
+            @update:modelValue="queryCategoryType = ''"
           >
-            <ChevronUpDownIcon
-              class="h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            />
-          </ComboboxButton>
-        </div>
-          <ComboboxOptions
-            v-if="filteredCategoryType.length > 0"
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-          >
-            <ComboboxOption
-              v-for="(categoryType, index) in filteredCategoryType"
-              :key="index"
-              :value="categoryType"
-              as="template"
-              v-slot="{ active, selected }"
-            >
-              <li
-                :class="[
-                  'relative cursor-default select-none py-2 pl-8 pr-4',
-                  active ? 'bg-primary text-white' : 'text-gray-900',
-                ]"
+            <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
+              >Category
+            </ComboboxLabel>
+            <div class="relative">
+              <ComboboxInput
+                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-color-nk sm:text-sm sm:leading-6"
+                @change="queryCategoryType = $event.target.value"
+                @blur="queryCategoryType = ''"
+                :display-value="(categoryType) => ((categoryType as Category)?.name)"
+              />
+              <ComboboxButton
+                class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
               >
-                <span class="block truncate">
-                  <span :class="{ 'font-semibold': selected }">{{
-                    categoryType.name
-                  }}</span>
-                </span>
-
-                <span
-                  v-if="selected"
+                <ChevronUpDownIcon
+                  class="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </ComboboxButton>
+            </div>
+            <ComboboxOptions
+              v-if="filteredCategoryType.length > 0"
+              class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            >
+              <ComboboxOption
+                v-for="(categoryType, index) in filteredCategoryType"
+                :key="index"
+                :value="categoryType"
+                as="template"
+                v-slot="{ active, selected }"
+              >
+                <li
                   :class="[
-                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                    active ? 'text-white' : 'text-gray-500',
+                    'relative cursor-default select-none py-2 pl-8 pr-4',
+                    active ? 'bg-primary text-white' : 'text-gray-900',
                   ]"
                 >
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span>
-              </li>
-            </ComboboxOption>
-          </ComboboxOptions>
-        <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
-          >Your Category is missing? Ask your Admin to add new ones.
-        </ComboboxLabel>
-      </Combobox>
-    </div>
+                  <span class="block truncate">
+                    <span :class="{ 'font-semibold': selected }">{{
+                      categoryType.name
+                    }}</span>
+                  </span>
+
+                  <span
+                    v-if="selected"
+                    :class="[
+                      'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                      active ? 'text-white' : 'text-gray-500',
+                    ]"
+                  >
+                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </li>
+              </ComboboxOption>
+            </ComboboxOptions>
+            <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
+              >Your Category is missing? Ask your Admin to add new ones.
+            </ComboboxLabel>
+          </Combobox>
+        </div>
         <!-- ttMaxParticipants -->
         <label
           for="ttMaxParticipants"
           class="block text-sm/6 font-medium text-gray-900"
-          >
+        >
           maxParticipants</label
         >
         <div class="mb-2">
@@ -202,7 +206,7 @@
         <label
           for="ttMinParticipants"
           class="block text-sm/6 font-medium text-gray-900"
-          >
+        >
           minParticipants</label
         >
         <div class="mb-2">
@@ -243,13 +247,18 @@
           <span class="flex-1 font-semibold">requirements</span>
           <span>{{ selectedTrainingType.requirements }}</span>
         </div>
-        <button @click="selectedTrainingType=null" class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary">Remove Choice</button>
+        <button
+          @click="selectedTrainingType = null"
+          class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary"
+        >
+          Remove Choice
+        </button>
       </div>
       <!-- Training -->
-       <div id="training">
-      <h2 class="text-base/7 font-semibold text-gray-900">Training</h2>
-      <label for="text" class="block text-sm/6 font-medium text-gray-900"
-          > Notes</label
+      <div id="training">
+        <h2 class="text-base/7 font-semibold text-gray-900">Training</h2>
+        <label for="text" class="block text-sm/6 font-medium text-gray-900">
+          Notes</label
         >
         <div class="mb-2">
           <input
@@ -260,72 +269,83 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
           />
         </div>
-        <label for="tNotes" class="text-sm/6 text-gray-600">These are Notes specific to 1 Training</label>
+        <label for="tNotes" class="text-sm/6 text-gray-600"
+          >These are Notes specific to 1 Training</label
+        >
       </div>
       <!-- Timeblocks -->
-<!-- Timeblocks -->
-<div class="timeblocks mt-6">
-  <h2 class="text-base font-semibold text-gray-900">Timeblocks</h2>
+      <!-- Timeblocks -->
+      <div class="timeblocks mt-6">
+        <h2 class="text-base font-semibold text-gray-900">Timeblocks</h2>
 
-  <!-- Start Date -->
-  <label for="tbStart" class="block text-sm font-medium text-gray-900 mt-2"
-    >Start Date</label
-  >
-  <div class="mb-2">
-    <input
-      v-model="tbStart"
-      type="date"
-      name="tbStart"
-      id="tbStart"
-      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-    />
-  </div>
+        <!-- Start Date -->
+        <label
+          for="tbStart"
+          class="block text-sm font-medium text-gray-900 mt-2"
+          >Start Date</label
+        >
+        <div class="mb-2">
+          <input
+            v-model="tbStart"
+            type="date"
+            name="tbStart"
+            id="tbStart"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+          />
+        </div>
 
-  <!-- End Date -->
-  <label for="tbEnd" class="block text-sm font-medium text-gray-900"
-    >End Date</label
-  >
-  <div class="mb-2">
-    <input
-      v-model="tbEnd"
-      type="date"
-      name="tbEnd"
-      id="tbEnd"
-      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-    />
-  </div>
+        <!-- End Date -->
+        <label for="tbEnd" class="block text-sm font-medium text-gray-900"
+          >End Date</label
+        >
+        <div class="mb-2">
+          <input
+            v-model="tbEnd"
+            type="date"
+            name="tbEnd"
+            id="tbEnd"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+          />
+        </div>
 
-  <!-- Add Timeblock Button -->
-  <button
-    @click="addTimeblock"
+        <!-- Add Timeblock Button -->
+        <button
+          @click="addTimeblock"
+          class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+        >
+          Add Timeblock
+        </button>
+
+        <!-- List of Timeblocks -->
+        <div v-if="timeblocks.length" class="mt-4">
+          <h3 class="text-sm font-medium text-gray-900">Added Timeblocks</h3>
+          <ul>
+            <li
+              v-for="(timeblock, index) in timeblocks"
+              :key="index"
+              class="flex items-center justify-between py-2 border-b border-gray-200"
+            >
+              <span class="text-sm text-gray-700">
+                {{ formatDate(timeblock.start) }} -
+                {{ formatDate(timeblock.end) }}
+              </span>
+              <button
+                @click="removeTimeblock(index)"
+                class="text-sm text-red-500 hover:underline"
+              >
+                <TrashIcon class="h-5 w-5 mr-1" aria-hidden="true" />
+              </button>
+            </li>
+          </ul>
+        </div>
+        <!-- send it -->
+        <button
+    @click="createEvent"
     class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
   >
-    Add Timeblock
+    Create event
   </button>
-
-  <!-- List of Timeblocks -->
-  <div v-if="timeblocks.length" class="mt-4">
-    <h3 class="text-sm font-medium text-gray-900">Added Timeblocks</h3>
-    <ul>
-      <li
-        v-for="(timeblock, index) in timeblocks"
-        :key="index"
-        class="flex items-center justify-between py-2 border-b border-gray-200"
-      >
-        <span class="text-sm text-gray-700"
-          >  {{ formatDate(timeblock.start) }} - {{ formatDate(timeblock.end) }}
-          </span
-        >
-        <button
-          @click="removeTimeblock(index)"
-          class="text-sm text-red-500 hover:underline"
-        >
-          <TrashIcon class="h-5 w-5 mr-1" aria-hidden="true" />
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
+      </div>
     </div>
   </div>
 </template>
@@ -346,7 +366,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/vue";
-import { getTrainingTypes, getCategories } from "@/services/DbConnector";
+import { getTrainingTypes, getCategories, newTrainingType } from "@/services/DbConnector";
 
 //Interfaces ---------
 interface TrainingType {
@@ -374,7 +394,7 @@ const ttMinParticipants = ref<number>();
 const ttRequirements = ref<string>();
 
 // Params training
-const tNotes = ref<string>()
+const tNotes = ref<string>();
 
 // Params timeblocks
 
@@ -384,8 +404,8 @@ interface Timeblock {
 }
 
 const timeblocks = ref<Timeblock[]>([]);
-const tbStart = ref<string>('');
-const tbEnd = ref<string>('');
+const tbStart = ref<string>("");
+const tbEnd = ref<string>("");
 
 function addTimeblock() {
   if (tbStart.value && tbEnd.value) {
@@ -394,17 +414,17 @@ function addTimeblock() {
       end: `${tbEnd.value}T00:00:00+01:00`,
     };
     timeblocks.value.push(newTimeblock);
-    tbStart.value = '';
-    tbEnd.value = '';
+    tbStart.value = "";
+    tbEnd.value = "";
   } else {
-    alert('Please select both start and end dates.');
+    alert("Please select both start and end dates.");
   }
 }
 
 function formatDate(datetimeStr: string): string {
   const date = new Date(datetimeStr);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear();
   return `${day}.${month}.${year}`;
 }
@@ -421,11 +441,10 @@ const filteredTrainingType = computed<TrainingType[]>(() => {
 
   // filter by queryTrainingType
   if (queryTrainingType.value !== "") {
-    filteredTrainingType = filteredTrainingType.filter(
-      (trainingType) =>
-        trainingType.name
-          .toLowerCase()
-          .includes(queryTrainingType.value.toLowerCase())
+    filteredTrainingType = filteredTrainingType.filter((trainingType) =>
+      trainingType.name
+        .toLowerCase()
+        .includes(queryTrainingType.value.toLowerCase())
     );
   }
 
@@ -433,7 +452,6 @@ const filteredTrainingType = computed<TrainingType[]>(() => {
 });
 
 const categoryTypes = ref<Category[]>([]);
-
 
 //logic  CategoryType ---------
 const queryCategoryType = ref("");
@@ -443,11 +461,10 @@ const filteredCategoryType = computed<Category[]>(() => {
 
   // filter by queryCategoryType
   if (queryCategoryType.value !== "") {
-    filteredCategoryType = filteredCategoryType.filter(
-      (categoryType) =>
-        categoryType.name
-          .toLowerCase()
-          .includes(queryCategoryType.value.toLowerCase())
+    filteredCategoryType = filteredCategoryType.filter((categoryType) =>
+      categoryType.name
+        .toLowerCase()
+        .includes(queryCategoryType.value.toLowerCase())
     );
   }
 
@@ -455,6 +472,33 @@ const filteredCategoryType = computed<Category[]>(() => {
 });
 
 
+const createEvent = async () => {
+  if (!selectedTrainingType) {
+    if (
+      ttName.value &&
+      ttDescription.value &&
+      ttCategory &&
+      ttMaxParticipants &&
+      ttMinParticipants &&
+      ttRequirements.value
+    ) {
+      newTrainingType (
+
+        ttName.value,
+        ttDescription.value,
+         ttCategory.value!,
+        ttMaxParticipants.value!,
+         ttMinParticipants.value!,
+         ttRequirements.value,
+      )
+    } else {
+      alert("Please fill out all training type fields.");
+      return;
+    }
+  } else {
+    alert("Please select a training type.");
+  }
+};
 
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();

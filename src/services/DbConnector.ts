@@ -57,3 +57,29 @@ export async function getCategories(): Promise<any> {
     }
   }
 }
+
+export const newTrainingType = async (name:string, description:string, category:number, maxParticipants:number, minParticipants:number, requirements:string) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      name: name,
+      description: description,
+      category: category,
+      maxParticipants: maxParticipants,
+      minParticipants: minParticipants,
+      requirements: requirements
+    }
+    const response = await api.post('/trainingtypes/', body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getCategories();
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
