@@ -45,6 +45,42 @@ export async function getTrainingTypes(): Promise<any> {
   }
 }
 
+export async function getTrainingBlocks(): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const response = await api.get('/timeblocks/', { headers });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getTrainingTypes();
+    } else {
+      console.error('Error fetching training types:', error);
+      throw error;
+    }
+  }
+}
+
+export async function getTrainings(): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const response = await api.get('/trainings/', { headers });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return getTrainingTypes();
+    } else {
+      console.error('Error fetching training types:', error);
+      throw error;
+    }
+  }
+}
+
 export async function getCategories(): Promise<any> {
   try {
     const headers = {
