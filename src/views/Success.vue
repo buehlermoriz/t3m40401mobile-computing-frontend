@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center my-36">
-    <p class="text-xl font-semibold mb-4">Training was created successfully!</p>
+    <p class="text-xl font-semibold mb-4">Der Kurs wurde erfolgreich angelegt!</p>
     <video
       src="../assets/success.webm"
       autoplay
@@ -11,7 +11,7 @@
       @click="router.push({ path: '/' })"
       class="w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
     >
-      Back Home
+      zur Startseite
     </button>
   </div>
 </template>

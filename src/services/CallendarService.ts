@@ -9,8 +9,8 @@ interface dayObject {
 
 export const getMonth = (year: number, monthIndex: number, eventDatesSet: any) => {
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+    'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
   ];
   const today = new Date();
   const monthName = monthNames[monthIndex];

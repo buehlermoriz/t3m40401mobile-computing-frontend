@@ -103,9 +103,11 @@ const isLoggedIn = computed(() => store.getters.user.loggedIn);
 const avatar = computed(() => store.getters.user.data?.photoURL);
 
 const navigation = [
-  { name: "Kurse", href: "/user" },
+  { name: "Home", href: "/" },
+  { name: "Meine Kurse <TODO>", href: "" },
+  { name: "Neuer Kurs", href: "/new-event" },
+  { name: "Kategorien", href: "/categories" },
   { name: "Profil", href: "/user" },
-  { name: "New Event", href: "/new-event" },
 ];
 
 const mobileMenuOpen = ref(false);

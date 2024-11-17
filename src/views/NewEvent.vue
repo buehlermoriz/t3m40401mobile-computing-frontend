@@ -65,12 +65,12 @@
             </ComboboxOptions>
           </div>
           <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
-            >Choose an exisiting Trainingtype or generate a new one bellow.
+            >Wählen Sie aus den vorhandenen Vorlesungsarten oder erstellen Sie eine neue Vorlesungsart.
           </ComboboxLabel>
         </Combobox>
       </div>
       <!-- Trainingtype -->
-      <h2 class="text-base/7 font-semibold text-gray-900">TrainingType</h2>
+      <h2 class="text-base/7 font-semibold text-gray-900">Vorlesungsart</h2>
       <div id="trainingtypes" v-if="!selectedTrainingType">
         <!-- ttName -->
         <label for="text" class="block text-sm/6 font-medium text-gray-900">
@@ -90,7 +90,7 @@
           for="ttDescription"
           class="block text-sm/6 font-medium text-gray-900"
         >
-          description</label
+          Beschreibung</label
         >
 
         <div class="mb-2">
@@ -107,7 +107,7 @@
           for="ttRequirements"
           class="block text-sm/6 font-medium text-gray-900"
         >
-          requirements</label
+          Anforderungen</label
         >
 
         <div class="mb-2">
@@ -128,7 +128,7 @@
             @update:modelValue="queryCategory = ''"
           >
             <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
-              >Category
+              >Kategorie
             </ComboboxLabel>
             <div class="relative">
               <ComboboxInput
@@ -182,7 +182,7 @@
               </ComboboxOption>
             </ComboboxOptions>
             <ComboboxLabel class="mt-1 text-sm/6 text-gray-600"
-              >Your Category is missing? Ask your Admin to add new ones.
+              >Ihre Kategorie ist nicht dabei? Bitten Sie den Admin, eine neue Kategorie hinzuzufügen.
             </ComboboxLabel>
           </Combobox>
         </div>
@@ -191,7 +191,7 @@
           for="ttMaxParticipants"
           class="block text-sm/6 font-medium text-gray-900"
         >
-          maxParticipants</label
+          max. Teilnehmer</label
         >
         <div class="mb-2">
           <input
@@ -207,7 +207,7 @@
           for="ttMinParticipants"
           class="block text-sm/6 font-medium text-gray-900"
         >
-          minParticipants</label
+          min. Teilnehmer</label
         >
         <div class="mb-2">
           <input
@@ -224,41 +224,41 @@
         class="p-4 mt-3 ring-gray-300 ring-1 rounded-md"
       >
         <div class="flex items-center gap-x-2 text-gray-900">
-          <span class="flex-1 font-semibold">Selected Trainingtype:</span>
+          <span class="flex-1 font-semibold">Gewählte Vorlesungsart:</span>
           <span>{{ selectedTrainingType.name }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">description</span>
+          <span class="flex-1 font-semibold">Beschreibung</span>
           <span>{{ selectedTrainingType.description }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">category</span>
+          <span class="flex-1 font-semibold">Kategorie</span>
           <span>{{ selectedTrainingType.category }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">maxParticipants</span>
+          <span class="flex-1 font-semibold">max. Teilnehmer</span>
           <span>{{ selectedTrainingType.maxParticipants }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">minParticipants</span>
+          <span class="flex-1 font-semibold">min. Teilnehmer</span>
           <span>{{ selectedTrainingType.minParticipants }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">requirements</span>
+          <span class="flex-1 font-semibold">Anforderungen</span>
           <span>{{ selectedTrainingType.requirements }}</span>
         </div>
         <button
           @click="selectedTrainingType = null"
           class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary"
         >
-          Remove Choice
+          Auswahl zurücksetzen
         </button>
       </div>
       <!-- Training -->
       <div id="training">
-        <h2 class="text-base/7 font-semibold text-gray-900">Training</h2>
+        <h2 class="text-base/7 font-semibold text-gray-900">Kurs</h2>
         <label for="text" class="block text-sm/6 font-medium text-gray-900">
-          Notes</label
+          Notizen</label
         >
         <div class="mb-2">
           <input
@@ -270,7 +270,7 @@
           />
         </div>
         <label for="tNotes" class="text-sm/6 text-gray-600"
-          >These are Notes specific to 1 Training</label
+          >Diese Beschreibung bezieht sich auf den einzelnen Kurs nicht die Kursart.</label
         >
                 <!-- teacher -->
                 <div class="relative">
@@ -281,7 +281,7 @@
             @update:modelValue="queryTeacher = ''"
           >
             <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
-              >Teacher
+              >Dozent
             </ComboboxLabel>
             <div class="relative">
               <ComboboxInput
@@ -340,13 +340,13 @@
       <!-- Timeblocks -->
       <!-- Timeblocks -->
       <div class="timeblocks mt-6">
-        <h2 class="text-base font-semibold text-gray-900">Timeblocks</h2>
+        <h2 class="text-base font-semibold text-gray-900">Zeitblöcke</h2>
 
         <!-- Start Date -->
         <label
           for="tbStart"
           class="block text-sm font-medium text-gray-900 mt-2"
-          >Start Date</label
+          >Start</label
         >
         <div class="mb-2">
           <input
@@ -360,7 +360,7 @@
 
         <!-- End Date -->
         <label for="tbEnd" class="block text-sm font-medium text-gray-900"
-          >End Date</label
+          >Ende</label
         >
         <div class="mb-2">
           <input
@@ -375,14 +375,14 @@
         <!-- Add Timeblock Button -->
         <button
           @click="addTimeblock"
-          class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary"
+          class="mt-2 w-full flex justify-center rounded-md px-3 py-1.5 text-sm  shadow-sm text-primary ring-inset ring-1 ring-primary"
         >
-          Add Timeblock
+          Zeitblock hinzufügen
         </button>
 
         <!-- List of Timeblocks -->
         <div v-if="timeblocks.length" class="mt-4">
-          <h3 class="text-sm font-medium text-gray-900">Added Timeblocks</h3>
+          <h3 class="text-sm font-medium text-gray-900">Geplante Zeitblöcke</h3>
           <ul>
             <li
               v-for="(timeblock, index) in timeblocks"
@@ -407,7 +407,7 @@
           @click="createEvent"
           class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
         >
-          Create event
+          Kurs erstellen
         </button>
       </div>
     </div>
@@ -467,28 +467,26 @@ interface Teacher {
   birthDate: string;
 }
 
+interface Timeblock {
+  start: string;
+  end: string;
+}
 const trainingTypes = ref<TrainingType[]>([]);
-
 // Params trainingType
 const ttName = ref<string>();
 const ttDescription = ref<string>();
 const ttMaxParticipants = ref<number>();
 const ttMinParticipants = ref<number>();
 const ttRequirements = ref<string>();
-
 // Params training
 const tNotes = ref<string>();
-
 // Params timeblocks
-
-interface Timeblock {
-  start: string;
-  end: string;
-}
-
 const timeblocks = ref<Timeblock[]>([]);
 const tbStart = ref<string>("");
 const tbEnd = ref<string>("");
+// Params create Event
+const trainingTypeId = ref<number>();
+const timeBlockIds = ref<number[]>([]);
 
 function addTimeblock() {
   if (tbStart.value && tbEnd.value) {
@@ -520,7 +518,7 @@ function removeTimeblock(index: number) {
 const queryTrainingType = ref("");
 const selectedTrainingType = ref<TrainingType | null>(null);
 const filteredTrainingType = computed<TrainingType[]>(() => {
-  let filteredTrainingType = trainingTypes.value; // Start with all trainingTypes
+let filteredTrainingType = trainingTypes.value; // Start with all trainingTypes
 
   // filter by queryTrainingType
   if (queryTrainingType.value !== "") {
@@ -574,9 +572,7 @@ const filteredTeacher = computed<Teacher[]>(() => {
   return filteredTeacher; // Return the filtered array
 });
 
-// variables create Event
-const trainingTypeId = ref<number>();
-const timeBlockIds = ref<number[]>([]);
+
 
 const createEvent = async () => {
   // STEP 1: Create or select training type

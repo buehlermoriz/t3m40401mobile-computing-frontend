@@ -1,16 +1,16 @@
 <template>
-  <h2 class="text-base font-semibold text-gray-900">Categories</h2>
+  <h2 class="text-base font-semibold text-gray-900">Kategorien</h2>
   <p class="mt-1 text-sm/6 text-gray-600">
-    As Admin you are able to create and remove categories for all users. Please
-    note, that removing a category will delete all trainings correlating to the
-    category.
+    Als Admin können Sie Kategorien für alle Benutzer erstellen und entfernen.
+    Bitte beachten Sie, dass das Entfernen einer Kategorie alle Schulungen löscht,
+    die mit der Kategorie angelegt wurden.
   </p>
   <div class="flex mt-5">
     <button
       @click="modalOpenAdd = true"
       class="ml-auto rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
-      Add Category
+      Kategorie hinzufügen
     </button>
   </div>
   <ol
@@ -81,17 +81,13 @@
                   <DialogTitle
                     as="h3"
                     class="text-base font-semibold text-gray-900"
-                    >Delete Category</DialogTitle
+                    >Kategorie löschen</DialogTitle
                   >
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                      Are you sure you want to delete the category
-                      {{
-                        categories.find(
-                          (category) => category.id === categoryToDelete.value
-                        )?.name
-                      }}? All trainings correlating to the category will be
-                      deleted.
+                      Sind Sie sicher, dass Sie die Kategorie
+                      löchen möchten? Alle Schulungen, die mit dieser angelegt wurden,
+                        werden ebenfalls gelöscht.
                     </p>
                   </div>
                 </div>
@@ -102,7 +98,7 @@
                   class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                   @click="deleteCategory()"
                 >
-                  Delete
+                  Löschen
                 </button>
                 <button
                   type="button"
@@ -110,7 +106,7 @@
                   @click="cancelDelete()"
                   ref="cancelButtonRef"
                 >
-                  Cancel
+                  Abbrechen
                 </button>
               </div>
             </DialogPanel>
@@ -157,12 +153,12 @@
                   <DialogTitle
                     as="h3"
                     class="text-base font-semibold text-gray-900"
-                    >Add Category</DialogTitle
+                    >Kategorie hinzufügen</DialogTitle
                   >
                 </div>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    Create a new Category, wich will be available for all users.
+                    Erstellen Sie eine neue Kategorie. Diese wird für alle Benutzer sichtbar sein.
                   </p>
                 </div>
                 <div class="my-4">
@@ -186,7 +182,7 @@
                   class="inline-flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
                   @click="addCategory()"
                 >
-                  Create
+                  Erstellen
                 </button>
                 <button
                   type="button"
@@ -194,7 +190,7 @@
                   @click="modalOpenAdd = false"
                   ref="cancelButtonRef"
                 >
-                  Cancel
+                  Abbrechen
                 </button>
               </div>
             </DialogPanel>

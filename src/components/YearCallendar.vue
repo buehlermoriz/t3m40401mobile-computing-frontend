@@ -9,9 +9,9 @@
           <h2 class="text-sm font-semibold text-gray-900">{{ month.name }}</h2>
           <div class="mt-6 grid grid-cols-7 text-xs/6 text-gray-500">
             <div>M</div>
-            <div>T</div>
-            <div>W</div>
-            <div>T</div>
+            <div>D</div>
+            <div>M</div>
+            <div>D</div>
             <div>F</div>
             <div>S</div>
             <div>S</div>

@@ -4,7 +4,7 @@
         <time datetime="selectedYear">{{selectedYear}}</time>
       </h1>
       <div class="flex items-center">
-        <div v-if="view == 'Year'" class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
+        <div v-if="view == 'Jahres'" class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
           <button @click="selectedYear-=1" type="button" class="flex h-9 w-12 items-center justify-center rounded-l-md border-y border-l border-gray-300 pr-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pr-0 md:hover:bg-gray-50">
             <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
           </button>
@@ -16,7 +16,7 @@
         <div class="hidden md:ml-4 md:flex md:items-center">
           <Menu as="div" class="relative">
             <MenuButton type="button" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-              {{view}} view
+              {{view}}ansicht
               <ChevronDownIcon class="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
             </MenuButton>
 
@@ -24,17 +24,17 @@
               <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1">
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='Month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
+                    <div @click="view='Monats'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Monatsansicht</div>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='Year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
+                    <div @click="view='Jahres'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Jahresansicht</div>
                   </MenuItem>
                 </div>
               </MenuItems>
             </transition>
           </Menu>
           <div class="ml-6 h-6 w-px bg-gray-300" />
-          <RouterLink to="/new-event" type="button" class="ml-6 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Add event</RouterLink>
+          <RouterLink to="/new-event" type="button" class="ml-6 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Kurs erstellen</RouterLink>
         </div>
         <Menu as="div" class="relative ml-6 md:hidden">
           <MenuButton class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500">
@@ -45,15 +45,15 @@
             <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
-                  <RouterLink to="/new-event" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Create event</RouterLink>
+                  <RouterLink to="/new-event" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Kurs erstellen</RouterLink>
                 </MenuItem>
               </div>
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
-                    <div @click="view='Month'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Month view</div>
+                    <div @click="view='Monats'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Monatsansicht</div>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <div @click="view='Year'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Year view</div>
+                    <div @click="view='Jahres'" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Jahresansicht</div>
                   </MenuItem>
               </div>
             </MenuItems>
@@ -61,8 +61,8 @@
         </Menu>
       </div>
     </header>
-  <YearCallendar v-if="view == 'Year'" :selectedYear="selectedYear" @dateSelected="handleDateSelected"/>
-  <MonthCallendar v-if="view == 'Month'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
+  <YearCallendar v-if="view == 'Jahres'" :selectedYear="selectedYear" @dateSelected="handleDateSelected"/>
+  <MonthCallendar v-if="view == 'Monats'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
 </template>
 
 <script setup>
@@ -75,13 +75,13 @@ import { RouterLink } from 'vue-router'
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth())
 const selectedDay = ref(new Date().getDate())
-const view = ref('Year')
+const view = ref('Jahres')
 
 const handleDateSelected = ({ dayOfDate, monthIndex }) => {
   selectedMonth.value = monthIndex
   selectedDay.value = dayOfDate
 
-  view.value = 'Month'
+  view.value = 'Monats'
 }
 
 </script>
