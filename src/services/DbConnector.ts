@@ -27,17 +27,19 @@ export async function generateToken(): Promise<void> {
 
 // GET ------------------------------------------------------------------------
 
-export async function getTrainingTypes(): Promise<any> {
+export async function getTrainingTypes(id: number): Promise<any> {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
     };
-    const response = await api.get('/trainingtypes/', { headers });
+    const params = id ? { id } : {};
+
+    const response = await api.get('/trainingtypes/', { headers, params });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getTrainingTypes();
+      return getTrainingTypes(id);
     } else {
       console.error('Error fetching training types:', error);
       throw error;
@@ -55,7 +57,7 @@ export async function getTrainingBlocks(): Promise<any> {
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getTrainingTypes();
+      return getTrainingBlocks();
     } else {
       console.error('Error fetching training types:', error);
       throw error;
@@ -73,7 +75,7 @@ export async function getTrainings(): Promise<any> {
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getTrainingTypes();
+      return getTrainings();
     } else {
       console.error('Error fetching training types:', error);
       throw error;
@@ -81,7 +83,7 @@ export async function getTrainings(): Promise<any> {
   }
 }
 
-export async function getCategories(): Promise<any> {
+export async function getTrainingCategory(): Promise<any> {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
@@ -91,7 +93,7 @@ export async function getCategories(): Promise<any> {
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getCategories();
+      return getTrainingCategory();
     } else {
       console.error('Error fetching training categories:', error);
       throw error;
@@ -110,7 +112,7 @@ export async function getUser(role?: number): Promise<any> {
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getCategories();
+      return getUser();
     } else {
       console.error('Error fetching training categories:', error);
       throw error;
@@ -138,7 +140,7 @@ export const newTrainingType = async (name:string, description:string, category:
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getCategories();
+      return newTrainingType(name, description, category, maxParticipants, minParticipants, requirements);
     } else {
       console.error('Error fetching training categories:', error);
       throw error;
@@ -160,7 +162,7 @@ export const newTrainingTimeBlock = async (start:string, end:string): Promise<nu
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getCategories();
+      return newTrainingTimeBlock(start, end);
     } else {
       console.error('Error fetching training categories:', error);
       throw error;
@@ -186,7 +188,7 @@ export const newTraining = async (trainingTypeId:number, timeblocks:number[], no
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getCategories();
+      return newTraining(trainingTypeId, timeblocks, notes, selectedTeacher);
     } else {
       console.error('Error fetching training categories:', error);
       throw error;

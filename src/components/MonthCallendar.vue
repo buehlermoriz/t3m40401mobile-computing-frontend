@@ -1,6 +1,6 @@
 <template>
   <div v-if="month">
-    <h2 class="text-base font-semibold text-gray-900">Upcoming meetings</h2>
+    <h2 class="text-base font-semibold text-gray-900">Upcoming <template></template>rainings</h2>
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-16">
       <div
         class="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9"
@@ -72,42 +72,31 @@
             </time>
           </button>
         </div>
-        <button
-          type="button"
-          class="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Add event
-        </button>
       </div>
       <ol
         class="mt-4 divide-y divide-gray-100 text-sm/6 lg:col-span-7 xl:col-span-8"
       >
         <li
-          v-for="meeting in meetings"
-          :key="meeting.id"
+          v-for="training in trainings"
+          :key="training.name"
           class="relative flex space-x-6 py-6 xl:static"
         >
-          <img
-            :src="meeting.imageUrl"
-            alt=""
-            class="h-14 w-14 flex-none rounded-full"
-          />
+
           <div class="flex-auto">
             <h3 class="pr-10 font-semibold text-gray-900 xl:pr-0">
-              {{ meeting.name }}
+              {{ training.name }}
             </h3>
             <dl class="mt-2 flex flex-col text-gray-500 xl:flex-row">
               <div class="flex items-start space-x-3">
                 <dt class="mt-0.5">
-                  <span class="sr-only">Date</span>
                   <CalendarIcon
                     class="h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
                 </dt>
                 <dd>
-                  <time :datetime="meeting.datetime"
-                    >{{ meeting.date }} at {{ meeting.time }}</time
+                  <time :datetime="training.datetime"
+                    >Start: {{ new Date(training.start).toLocaleDateString('de-DE') }}</time
                   >
                 </dd>
               </div>
@@ -115,13 +104,12 @@
                 class="mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5"
               >
                 <dt class="mt-0.5">
-                  <span class="sr-only">Location</span>
-                  <MapPinIcon
+                  <TagIcon
                     class="h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
                 </dt>
-                <dd>{{ meeting.location }}</dd>
+                <dd>{{ training.category }}</dd>
               </div>
             </dl>
           </div>
@@ -180,6 +168,7 @@
           </Menu>
         </li>
       </ol>
+      <div v-if="!trainingsLoaded" class="lg:col-span-7 xl:col-span-8 flex items-center justify-center"><DymanicLoader/></div>
     </div>
   </div>
 </template>
@@ -189,7 +178,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   EllipsisHorizontalIcon,
-  MapPinIcon,
+  TagIcon,
 } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { defineProps, ref, watch } from "vue";
@@ -198,7 +187,9 @@ import {
   getTrainingBlocks,
   getTrainings,
   getTrainingTypes,
+  getTrainingCategory,
 } from "@/services/DbConnector";
+import DymanicLoader from '@/components/DynamicLoader.vue'
 
 const props = defineProps({
   selectedYear: {
@@ -220,28 +211,33 @@ const props = defineProps({
 
 const month = ref();
 const eventDates = ref(new Set());
+const trainings = ref([]);
+const trainingsLoaded = ref(false);
 
 const loadMonth = async () => {
   month.value = getMonth(props.selectedYear, props.selectedMonth);
 
-  // Fetch training blocks for the selected month and year
-  const trainingBlocks = await getTrainingBlocks(
-    props.selectedYear,
-    props.selectedMonth + 1
-  );
-
-  // Extract event dates
   eventDates.value.clear();
+  trainings.value = [];
 
+  const trainingBlockIdsInCurrentMonth = new Set();
+  const collectedTrainingIds = new Set();
+  const collectedTrainings = [];
+  const loadedTrainingTypes = new Map();
+  const loadedCategories = new Map();
+
+  const trainingBlocks = await getTrainingBlocks();
+
+  // Collect trainingBlock IDs in the current month
   trainingBlocks.forEach((block) => {
     const startDate = new Date(block.start);
     const endDate = new Date(block.end);
 
-    // Adjust time to the start of the day
     startDate.setHours(0, 0, 0, 0);
     endDate.setHours(0, 0, 0, 0);
 
-    // Loop through the dates from start to end
+    let blockHasDateInCurrentMonth = false;
+
     for (
       let date = new Date(startDate);
       date <= endDate;
@@ -252,9 +248,69 @@ const loadMonth = async () => {
         date.getMonth() === props.selectedMonth
       ) {
         eventDates.value.add(date.toISOString().split("T")[0]);
+        blockHasDateInCurrentMonth = true;
       }
     }
+
+    if (blockHasDateInCurrentMonth) {
+      trainingBlockIdsInCurrentMonth.add(block.id);
+    }
   });
+
+  // Fetch trainings associated with the training blocks
+  for (const blockId of trainingBlockIdsInCurrentMonth) {
+    const trainingList = await getTrainings(blockId);
+
+    trainingList.forEach((training) => {
+      if (!collectedTrainingIds.has(training.id)) {
+        collectedTrainingIds.add(training.id);
+        collectedTrainings.push(training);
+      }
+    });
+  }
+
+  // Build meetings array
+  for (const training of collectedTrainings) {
+    // Fetch trainingType
+    let trainingType;
+    if (loadedTrainingTypes.has(training.type)) {
+      trainingType = loadedTrainingTypes.get(training.type);
+    } else {
+      const trainingTypeList = await getTrainingTypes(training.type);
+      trainingType = trainingTypeList[0];
+      loadedTrainingTypes.set(training.type, trainingType);
+    }
+
+    // Fetch category
+    let category;
+    if (loadedCategories.has(trainingType.category)) {
+      category = loadedCategories.get(trainingType.category);
+    } else {
+      const categoryList = await getTrainingCategory(trainingType.category);
+      category = categoryList[0];
+      loadedCategories.set(trainingType.category, category);
+    }
+
+    // Find earliest time block start
+    let earliestBlockStart = null;
+    training.blocks.forEach((blockId) => {
+      const block = trainingBlocks.find((b) => b.id === blockId);
+      if (block) {
+        const blockStart = new Date(block.start);
+        if (!earliestBlockStart || blockStart < earliestBlockStart) {
+          earliestBlockStart = blockStart;
+        }
+      }
+    });
+
+    trainings.value.push({
+      id: training.id,
+      start: earliestBlockStart ? earliestBlockStart.toISOString() : '',
+      name: trainingType.name,
+      category: category.name,
+    });
+  }
+  trainingsLoaded.value = true;
 };
 
 watch(
