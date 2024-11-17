@@ -1,4 +1,13 @@
-export const getMonth = (year: number, monthIndex: number) => {
+// CallendarService.js
+
+interface dayObject {
+  date: string;
+  isCurrentMonth?: boolean;
+  isToday?: boolean;
+  hasEvent?: boolean;
+}
+
+export const getMonth = (year: number, monthIndex: number, eventDatesSet: any) => {
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
@@ -20,34 +29,37 @@ export const getMonth = (year: number, monthIndex: number) => {
   const date = new Date(startDate);
 
   while (date <= endDate) {
-    const dateString = date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' format
-    const isCurrentMonth =  date.getMonth() === monthIndex;
+    const dateString = date.toISOString().split('T')[0]; // 'YYYY-MM-DD' format
+    const isCurrentMonth = date.getMonth() === monthIndex;
     const isToday = date.toDateString() === today.toDateString();
+    const hasEvent = eventDatesSet.has(dateString);
 
-    const dayObject: any = { date: dateString };
+    const dayObject: dayObject = { date: dateString };
     if (isCurrentMonth) {
       dayObject.isCurrentMonth = true;
     }
     if (isToday) {
       dayObject.isToday = true;
     }
+    if (hasEvent) {
+      dayObject.hasEvent = true;
+    }
 
     days.push(dayObject);
     date.setDate(date.getDate() + 1);
   }
 
-  const monthData = {
+  return {
     name: monthName,
     days: days,
   };
-
-  return monthData;
 };
-export const getYear = (year: number) => {
+// CallendarService.js
+export const getYear = (year: number, eventDatesSet: any) => {
   const yearData = [];
 
   for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-    const monthData = getMonth(year, monthIndex);
+    const monthData = getMonth(year, monthIndex, eventDatesSet);
     yearData.push(monthData);
   }
 

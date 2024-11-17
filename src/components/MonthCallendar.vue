@@ -1,7 +1,7 @@
 <template>
   <div v-if="month">
     <h2 class="text-base font-semibold text-gray-900">
-      Upcoming <template></template>rainings
+      Upcoming Trainings
     </h2>
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-16">
       <div
@@ -68,7 +68,7 @@
                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                 day.isToday && 'bg-indigo-600 font-semibold text-white',
                 day.isSelected && !day.isToday && 'bg-gray-900 text-white',
-                eventDates.has(day.date) && 'text-primary',
+                day.hasEvent && 'text-primary',
               ]"
             >
               {{ day.date.split("-").pop().replace(/^0/, "") }}
@@ -179,6 +179,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import {
   CalendarIcon,
@@ -222,8 +223,6 @@ const trainings = ref([]);
 const trainingsLoaded = ref(false);
 
 const loadMonth = async () => {
-  month.value = getMonth(selectedYear.value, selectedMonth.value);
-
   eventDates.value.clear();
   trainings.value = [];
 
@@ -317,6 +316,8 @@ const loadMonth = async () => {
       category: category.name,
     });
   }
+
+  month.value = getMonth(selectedYear.value, selectedMonth.value, eventDates.value);
   trainingsLoaded.value = true;
 };
 

@@ -1,3 +1,4 @@
+<!-- YearCallendar.vue -->
 <template>
   <div>
     <div class="bg-white">
@@ -38,10 +39,12 @@
                 :datetime="day.date"
                 :class="[
                   day.isToday && 'bg-indigo-600 font-semibold text-white',
+                  day.hasEvent && 'text-primary',
                   'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                 ]"
-                >{{ day.date.split("-").pop().replace(/^0/, "") }}</time
               >
+                {{ day.date.split("-").pop().replace(/^0/, "") }}
+              </time>
             </button>
           </div>
         </section>
@@ -50,9 +53,11 @@
   </div>
 </template>
 
+<!-- YearCallendar.vue -->
 <script setup>
 import { getYear } from "@/services/CallendarService";
 import { onMounted, ref, watch, defineEmits } from "vue";
+import { getTrainingBlocks } from "@/services/DbConnector";
 
 const props = defineProps({
   selectedYear: {
@@ -68,16 +73,40 @@ const months = ref([]);
 const emitDate = (day, monthIndex) => {
   const dayOfDate = day.split("-").pop().replace(/^0/, "");
   emit("dateSelected", { dayOfDate, monthIndex });
+}
+
+const loadYear = async () => {
+  // Fetch training blocks
+  const trainingBlocks = await getTrainingBlocks();
+
+  // Create a Set of event dates
+  const eventDatesSet = new Set();
+
+  trainingBlocks.forEach((block) => {
+    const start = new Date(block.start);
+    const end = new Date(block.end);
+
+    // Normalize time to midnight for date comparison
+    const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      const dateString = date.toISOString().split('T')[0]; // 'YYYY-MM-DD' format
+      eventDatesSet.add(dateString);
+    }
+  });
+
+  months.value = getYear(props.selectedYear, eventDatesSet);
 };
+
+onMounted(() => {
+  loadYear();
+});
 
 watch(
   () => props.selectedYear,
-  (newYear) => {
-    months.value = getYear(newYear);
+  () => {
+    loadYear();
   }
 );
-
-onMounted(() => {
-  months.value = getYear(props.selectedYear);
-});
 </script>
