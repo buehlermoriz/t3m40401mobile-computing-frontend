@@ -27,7 +27,7 @@ export async function generateToken(): Promise<void> {
 
 // GET ------------------------------------------------------------------------
 
-export async function getTrainingTypes(id: number): Promise<any> {
+export async function getTrainingTypes(id?: number): Promise<any> {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
@@ -39,7 +39,7 @@ export async function getTrainingTypes(id: number): Promise<any> {
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return getTrainingTypes(id);
+      return getTrainingTypes(id? id : undefined);
     } else {
       console.error('Error fetching training types:', error);
       throw error;

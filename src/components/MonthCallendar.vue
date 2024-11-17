@@ -1,6 +1,8 @@
 <template>
   <div v-if="month">
-    <h2 class="text-base font-semibold text-gray-900">Upcoming <template></template>rainings</h2>
+    <h2 class="text-base font-semibold text-gray-900">
+      Upcoming <template></template>rainings
+    </h2>
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-16">
       <div
         class="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9"
@@ -8,6 +10,7 @@
         <div class="flex items-center text-gray-900">
           <button
             type="button"
+            @click="prevMonth"
             class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
           >
             <span class="sr-only">Previous month</span>
@@ -16,6 +19,7 @@
           <div class="flex-auto text-sm font-semibold">{{ month.name }}</div>
           <button
             type="button"
+            @click="nextMonth"
             class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
           >
             <span class="sr-only">Next month</span>
@@ -41,8 +45,7 @@
             :class="[
               'py-1.5 hover:bg-gray-100 focus:z-10',
               day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
-              (day.isSelected || day.isToday) &&
-                'font-semibold',
+              (day.isSelected || day.isToday) && 'font-semibold',
               day.isSelected && 'text-white',
               !day.isSelected &&
                 day.isCurrentMonth &&
@@ -62,11 +65,11 @@
             <time
               :datetime="day.date"
               :class="[
-    'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-    day.isToday && 'bg-indigo-600 font-semibold text-white',
-    day.isSelected && !day.isToday && 'bg-gray-900 text-white',
-    eventDates.has(day.date) && 'text-primary',
-  ]"
+                'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                day.isToday && 'bg-indigo-600 font-semibold text-white',
+                day.isSelected && !day.isToday && 'bg-gray-900 text-white',
+                eventDates.has(day.date) && 'text-primary',
+              ]"
             >
               {{ day.date.split("-").pop().replace(/^0/, "") }}
             </time>
@@ -81,7 +84,6 @@
           :key="training.name"
           class="relative flex space-x-6 py-6 xl:static"
         >
-
           <div class="flex-auto">
             <h3 class="pr-10 font-semibold text-gray-900 xl:pr-0">
               {{ training.name }}
@@ -96,7 +98,10 @@
                 </dt>
                 <dd>
                   <time :datetime="training.datetime"
-                    >Start: {{ new Date(training.start).toLocaleDateString('de-DE') }}</time
+                    >Start:
+                    {{
+                      new Date(training.start).toLocaleDateString("de-DE")
+                    }}</time
                   >
                 </dd>
               </div>
@@ -104,10 +109,7 @@
                 class="mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5"
               >
                 <dt class="mt-0.5">
-                  <TagIcon
-                    class="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
+                  <TagIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </dt>
                 <dd>{{ training.category }}</dd>
               </div>
@@ -168,7 +170,12 @@
           </Menu>
         </li>
       </ol>
-      <div v-if="!trainingsLoaded" class="lg:col-span-7 xl:col-span-8 flex items-center justify-center"><DymanicLoader/></div>
+      <div
+        v-if="!trainingsLoaded"
+        class="lg:col-span-7 xl:col-span-8 flex items-center justify-center"
+      >
+        <DynamicLoader />
+      </div>
     </div>
   </div>
 </template>
@@ -181,7 +188,7 @@ import {
   TagIcon,
 } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineProps, ref, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { getMonth } from "@/services/CallendarService";
 import {
   getTrainingBlocks,
@@ -189,8 +196,9 @@ import {
   getTrainingTypes,
   getTrainingCategory,
 } from "@/services/DbConnector";
-import DymanicLoader from '@/components/DynamicLoader.vue'
+import DynamicLoader from "@/components/DynamicLoader.vue";
 
+// If you still need to receive initial values from props
 const props = defineProps({
   selectedYear: {
     type: Number,
@@ -202,12 +210,11 @@ const props = defineProps({
     required: false,
     default: new Date().getMonth(),
   },
-  selectedDay: {
-    type: Number,
-    required: false,
-    default: new Date().getDate(),
-  },
 });
+
+// Initialize local reactive variables
+const selectedYear = ref(props.selectedYear);
+const selectedMonth = ref(props.selectedMonth);
 
 const month = ref();
 const eventDates = ref(new Set());
@@ -215,7 +222,7 @@ const trainings = ref([]);
 const trainingsLoaded = ref(false);
 
 const loadMonth = async () => {
-  month.value = getMonth(props.selectedYear, props.selectedMonth);
+  month.value = getMonth(selectedYear.value, selectedMonth.value);
 
   eventDates.value.clear();
   trainings.value = [];
@@ -244,8 +251,8 @@ const loadMonth = async () => {
       date.setDate(date.getDate() + 1)
     ) {
       if (
-        date.getFullYear() === props.selectedYear &&
-        date.getMonth() === props.selectedMonth
+        date.getFullYear() === selectedYear.value &&
+        date.getMonth() === selectedMonth.value
       ) {
         eventDates.value.add(date.toISOString().split("T")[0]);
         blockHasDateInCurrentMonth = true;
@@ -269,7 +276,7 @@ const loadMonth = async () => {
     });
   }
 
-  // Build meetings array
+  // Build trainings array
   for (const training of collectedTrainings) {
     // Fetch trainingType
     let trainingType;
@@ -305,7 +312,7 @@ const loadMonth = async () => {
 
     trainings.value.push({
       id: training.id,
-      start: earliestBlockStart ? earliestBlockStart.toISOString() : '',
+      start: earliestBlockStart ? earliestBlockStart.toISOString() : "",
       name: trainingType.name,
       category: category.name,
     });
@@ -313,11 +320,29 @@ const loadMonth = async () => {
   trainingsLoaded.value = true;
 };
 
-watch(
-  () => [props.selectedYear, props.selectedMonth],
-  () => {
-    loadMonth();
-  },
-  { immediate: true }
-);
+const prevMonth = () => {
+  if (selectedMonth.value === 0) {
+    selectedMonth.value = 11;
+    selectedYear.value -= 1;
+  } else {
+    selectedMonth.value -= 1;
+  }
+  trainingsLoaded.value = false;
+  loadMonth();
+};
+
+const nextMonth = () => {
+  if (selectedMonth.value === 11) {
+    selectedMonth.value = 0;
+    selectedYear.value += 1;
+  } else {
+    selectedMonth.value += 1;
+  }
+  trainingsLoaded.value = false;
+  loadMonth();
+};
+
+onMounted(() => {
+  loadMonth();
+});
 </script>

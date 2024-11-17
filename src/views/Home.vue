@@ -4,7 +4,7 @@
         <time datetime="selectedYear">{{selectedYear}}</time>
       </h1>
       <div class="flex items-center">
-        <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
+        <div v-if="view == 'Year'" class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
           <button @click="selectedYear-=1" type="button" class="flex h-9 w-12 items-center justify-center rounded-l-md border-y border-l border-gray-300 pr-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pr-0 md:hover:bg-gray-50">
             <span class="sr-only">Previous Year</span>
             <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
@@ -36,7 +36,7 @@
             </transition>
           </Menu>
           <div class="ml-6 h-6 w-px bg-gray-300" />
-          <button type="button" class="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add event</button>
+          <RouterLink to="/new-event" type="button" class="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add event</RouterLink>
         </div>
         <Menu as="div" class="relative ml-6 md:hidden">
           <MenuButton class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500">

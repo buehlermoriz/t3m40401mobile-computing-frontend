@@ -432,7 +432,7 @@ import {
 } from "@headlessui/vue";
 import {
   getTrainingTypes,
-  getCategories,
+  getTrainingCategory,
   getUser,
   newTrainingType,
   newTrainingTimeBlock,
@@ -628,7 +628,7 @@ const createEvent = async () => {
 
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
-  categorys.value = await getCategories();
+  categorys.value = await getTrainingCategory();
   teachers.value = await getUser(2);
 });
 </script>
