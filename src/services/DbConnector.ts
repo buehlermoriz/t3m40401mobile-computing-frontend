@@ -195,3 +195,44 @@ export const newTraining = async (trainingTypeId:number, timeblocks:number[], no
     }
   }
 }
+
+export const newTrainingCategory = async (name:string): Promise<number>  => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      name: name
+    }
+    const response = await api.post('/trainingcategories/', body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return newTrainingCategory(name);
+    } else {
+      console.error('Error creating new category:', error);
+      throw error;
+    }
+  }
+}
+
+// DELETE ------------------------------------------------------------------------
+
+export async function deleteTrainingCategory(id: number): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const response = await api.delete(`/trainingcategories/${id}`, { headers });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await deleteTrainingCategory(id);
+      return getUser();
+    } else {
+      console.error('Error deleting category:', error);
+      throw error;
+    }
+  }
+}
