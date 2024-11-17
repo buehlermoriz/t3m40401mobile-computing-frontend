@@ -69,7 +69,7 @@ onMounted(() => {
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900 ">Email</label>
           <div class="mt-2">
             <input id="email" v-model="email" name="email" type="email" autocomplete="email" required
-              class="block w-full  rounded-md border-gray-500  text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary dark:ring-color-nk " />
+              class="block w-full  rounded-md border-gray-500  text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary  " />
           </div>
         </div>
         <p v-if="errors.email" class="mt-1 text-sm text-ms-danger" id="email-error">{{ errors.email }}</p>
@@ -80,7 +80,7 @@ onMounted(() => {
           <div class="mt-2">
             <input id="password" v-model="password" name="password" type="password" autocomplete="current-password"
               required @focus="focusPassword = true" @blur="focusPassword = false"
-              class="block w-full  rounded-md border-gray-500  text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary dark:ring-color-nk " />
+              class="block w-full  rounded-md border-gray-500  text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-primary  " />
           </div>
         </div>
         <p v-if="errors.password" class="mt-1 text-sm text-ms-danger" id="email-error">{{ errors.password }}</p>
@@ -90,7 +90,7 @@ onMounted(() => {
             <a @click="passwortReset" :disabled="!email || errors.email" :class="[
         'font-semibold',
         (!email || errors.email) ? 'text-gray-300  cursor-not-allowed' : 'cursor-pointer',
-        'text-primary dark:text-color-nk'
+        'text-primary '
       ]">
               Passwort vergessen?
             </a>
@@ -106,7 +106,7 @@ onMounted(() => {
       </form>
       <button
       @click="loginSso()"
-            class="mt-4 ring-2 ring-primary flex justify-center gap-x-2 items-center w-full  rounded-md px-3 font-semibold p-1.5 text-sm leading-6 text-primary dark:text-color-nk"
+            class="mt-4 ring-2 ring-primary flex justify-center gap-x-2 items-center w-full  rounded-md px-3 font-semibold p-1.5 text-sm leading-6 text-primary "
            >
             Google SSO
           </button>
@@ -114,7 +114,7 @@ onMounted(() => {
 
     <p class="mt-10 text-center text-sm text-gray-500 ">
       Noch kein Account?
-      <a href="/sign-up" class="font-semibold leading-6 text-primary dark:text-color-nk">Jetzt
+      <a href="/sign-up" class="font-semibold leading-6 text-primary ">Jetzt
         registrieren</a>
     </p>
   </div>

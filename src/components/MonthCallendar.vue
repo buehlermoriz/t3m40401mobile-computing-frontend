@@ -13,7 +13,6 @@
             @click="prevMonth"
             class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
           >
-            <span class="sr-only">Previous month</span>
             <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
           </button>
           <div class="flex-auto text-sm font-semibold">{{ month.name }}</div>
@@ -22,7 +21,6 @@
             @click="nextMonth"
             class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
           >
-            <span class="sr-only">Next month</span>
             <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
@@ -55,7 +53,7 @@
                 !day.isCurrentMonth &&
                 !day.isToday &&
                 'text-gray-400',
-              day.isToday && !day.isSelected && 'text-indigo-600',
+              day.isToday && !day.isSelected && 'text-primary',
               dayIdx === 0 && 'rounded-tl-lg',
               dayIdx === 6 && 'rounded-tr-lg',
               dayIdx === month.days.length - 7 && 'rounded-bl-lg',
@@ -66,7 +64,7 @@
               :datetime="day.date"
               :class="[
                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                day.isToday && 'bg-indigo-600 font-semibold text-white',
+                day.isToday && 'bg-primary font-semibold text-white',
                 day.isSelected && !day.isToday && 'bg-gray-900 text-white',
                 day.hasEvent && 'text-primary',
               ]"
@@ -123,7 +121,6 @@
               <MenuButton
                 class="-m-2 flex items-center rounded-full p-2 text-gray-500 hover:text-gray-600"
               >
-                <span class="sr-only">Open options</span>
                 <EllipsisHorizontalIcon class="h-5 w-5" aria-hidden="true" />
               </MenuButton>
             </div>

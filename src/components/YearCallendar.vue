@@ -38,7 +38,7 @@
               <time
                 :datetime="day.date"
                 :class="[
-                  day.isToday && 'bg-indigo-600 font-semibold text-white',
+                  day.isToday && 'bg-primary font-semibold text-white',
                   day.hasEvent && 'text-primary',
                   'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                 ]"
