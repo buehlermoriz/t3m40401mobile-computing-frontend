@@ -233,7 +233,7 @@
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
           <span class="flex-1 font-semibold">Kategorie</span>
-          <span>{{ selectedTrainingType.category }}</span>
+          <span>{{ selectedTrainingType.category.name }}</span>
         </div>
         <div class="flex items-center gap-x-2 text-gray-900 mt-1">
           <span class="flex-1 font-semibold">max. Teilnehmer</span>
@@ -447,7 +447,7 @@ interface TrainingType {
   id: number;
   name: string;
   description: string;
-  category: number;
+  category: Category;
   maxParticipants: number;
   minParticipants: number;
   requirements: string;

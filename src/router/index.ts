@@ -91,6 +91,15 @@ const router = createRouter({
                 title: 'categories',
                 requiresAuth: true
             }
+        },
+        {
+            path: '/user-events',
+            name: 'user-events',
+            component: () => import('@/views/EventsOfUser.vue'),
+            meta: {
+                title: 'user-events',
+                requiresAuth: true
+            }
         }
     ]
 })

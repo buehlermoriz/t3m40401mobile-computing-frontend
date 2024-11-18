@@ -127,9 +127,10 @@ const actions: ActionTree<RootState, RootState> = {
           uid: response.user.uid,
           accessToken: await response.user.getIdToken(),
           provider: response.user.providerData[0].providerId,
-          middlewareUserId: user.id,
-          middlewareUserRoleId: user.role,
+          middlewareUserId: user[0].id,
+          middlewareUserRoleId: user[0].role,
         });
+
         context.commit("SET_LOGGED_IN", true);
       } else {
         throw new Error("login failed");
@@ -163,7 +164,7 @@ const actions: ActionTree<RootState, RootState> = {
       } else {
         // User exists; fetch from your database
         const existingUser = await getUser(undefined, result.user.uid);
-        userId = existingUser.id;
+        userId = existingUser[0].id;
       }
   
       context.commit("SET_USER", {
@@ -230,8 +231,8 @@ const actions: ActionTree<RootState, RootState> = {
           uid: user.uid,
           accessToken: await user.getIdToken(),
           provider: user.providerData[0].providerId,
-          middlewareUserId: userMiddleware.id,
-          middlewareUserRoleId: userMiddleware.role,
+          middlewareUserId: userMiddleware[0].id,
+          middlewareUserRoleId: userMiddleware[0].role,
         });
         context.commit("SET_LOGGED_IN", true);
     } else {

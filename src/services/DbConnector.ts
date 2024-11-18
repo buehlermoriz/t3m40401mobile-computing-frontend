@@ -67,12 +67,13 @@ export async function getTrainingBlocks(): Promise<any> {
   }
 }
 
-export async function getTrainings(): Promise<any> {
+export async function getTrainings(participants?: number): Promise<any> {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
     };
-    const response = await api.get('/trainings/', { headers });
+    const params = participants ? { participants } : {};
+    const response = await api.get('/trainings/', { headers, params });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {

@@ -104,7 +104,7 @@ const avatar = computed(() => store.getters.user.data?.photoURL);
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Meine Kurse <TODO>", href: "" },
+  { name: "Meine Kurse", href: "/user-events" },
   { name: "Neuer Kurs", href: "/new-event" },
   { name: "Kategorien", href: "/categories" },
   { name: "Profil", href: "/user" },
