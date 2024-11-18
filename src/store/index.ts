@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   linkWithPopup,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import type { User } from "firebase/auth";
 import {
@@ -56,6 +57,25 @@ const mutations: MutationTree<RootState> = {
 };
 
 const actions: ActionTree<RootState, RootState> = {
+  async signUpEmail(
+    context: ActionContext<RootState, RootState>,
+    { email, password }: { email: string; password: string }
+  ): Promise<string | void> {
+    try {
+      const response = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      if (response) {
+        context.commit("SET_USER", response.user);
+        context.commit("SET_LOGGED_IN", true);
+      } else {
+        throw new Error("login failed");
+      }
+    } catch (error: any) {
+      let msg =
+        errorTranslateMap.get(error.code) ||
+        "Es ist ein unbekannter Fehler aufgetreten. Bitte versuche es später erneut.";
+      return msg;
+    }
+  },
   async logIn(
     context: ActionContext<RootState, RootState>,
     { email, password }: { email: string; password: string }
@@ -123,10 +143,6 @@ const actions: ActionTree<RootState, RootState> = {
   ): Promise<void> {
     context.commit("SET_LOGGED_IN", user !== null);
     if (user) {
-      const accounts = query(
-        collection(firebaseFirestore, "accounts"),
-        where("users", "array-contains", user.uid)
-      );
       context.commit("SET_USER", {
         email: user.email,
         displayName: user.displayName,
