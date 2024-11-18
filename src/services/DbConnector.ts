@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { toRaw } from 'vue';
 
+
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_MIDDLEWARE_URL
 });
@@ -101,12 +103,18 @@ export async function getTrainingCategory(): Promise<any> {
   }
 }
 
-export async function getUser(role?: number): Promise<any> {
+export async function getUser(role?: number, uid?: string): Promise<any> {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
     };
-    const params = role ? { role } : {};
+    const params: any = {};
+
+    if (uid) {
+      params.uid = uid;
+    } else if (role) {
+      params.role = role;
+    }
     const response = await api.get('/users/', { headers, params });
     return response.data;
   } catch (error: any) {
@@ -212,6 +220,31 @@ export const newTrainingCategory = async (name:string): Promise<number>  => {
       return newTrainingCategory(name);
     } else {
       console.error('Error creating new category:', error);
+      throw error;
+    }
+  }
+}
+
+export const newUser = async (name:string, role:number, birthDate: string, uid: string, email: string): Promise<number>  => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      name: name,
+      role: role,
+      birthDate: birthDate,
+      uid: uid,
+      email: email
+    }
+    const response = await api.post('/users/', body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return newUser(name, role, birthDate, uid, email);
+    } else {
+      console.error('Error creating new user:', error);
       throw error;
     }
   }

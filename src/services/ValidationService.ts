@@ -19,6 +19,11 @@ const schema = yup.object({
         .string()
         .min(5, "Der Namen muss mindestens 5 Zeichen lang sein")
         .max(150, "Der Namen darf maximal 150 Zeichen lang sein"),
+  name: yup
+    .string()
+    .min(5, "Der Namen muss mindestens 5 Zeichen lang sein")
+    .max(150, "Der Namen darf maximal 150 Zeichen lang sein")
+    .required("Bitte geben Sie einen Namen ein"),
 });
 
 export default schema;

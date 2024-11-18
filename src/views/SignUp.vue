@@ -9,18 +9,19 @@ import store from "@/store";
 
 // validation
 const { errors, meta, handleSubmit, defineField } = useForm({
-  validationSchema: schema.pick(["email", "password", "passwordConfirm"]),
+  validationSchema: schema.pick(["email", "password", "passwordConfirm", "name"]),
 });
 
 const [email, emailAttrs] = defineField("email");
 const [password, passwordAttrs] = defineField("password");
+const [name, nameAttrs] = defineField("name");
 const [passwordConfirm, passwordConfirmAttrs] = defineField("passwordConfirm");
 const errorMsg = ref<string | undefined>();
 const focusPassword = ref<boolean>(false);
 
 async function signUp() {
   try {
-    const response = await store.dispatch("signUpEmail", { email: email.value, password: password.value });
+    const response = await store.dispatch("signUpEmail", { email: email.value, password: password.value, name: name.value, role: selectedAccountType.value });
       if (response) {
     errorMsg.value = response;
   }
@@ -47,6 +48,25 @@ const selectedAccountType = ref(1);
     <div class="bg-ms-white px-6 py-12 shadow md:rounded-lg md:px-12">
       <!--Form -------->
       <form class="space-y-6" @submit.prevent="signUp">
+        <div>
+          <label
+            for="name"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Name</label
+          >
+          <div class="mt-2">
+            <input
+              id="name"
+              v-model="name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              required
+              class="block w-full rounded-md border-gray-500 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+
         <div>
           <label
             for="email"
