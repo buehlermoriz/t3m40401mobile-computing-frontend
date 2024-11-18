@@ -270,3 +270,20 @@ export async function deleteTrainingCategory(id: number): Promise<any> {
     }
   }
 }
+export async function deleteEvent(id: number): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const response = await api.delete(`/trainings/${id}`, { headers });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await deleteEvent(id);
+      return getUser();
+    } else {
+      console.error('Error deleting event:', error);
+      throw error;
+    }
+  }
+}

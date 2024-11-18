@@ -50,7 +50,7 @@
                 !day.isCurrentMonth &&
                 !day.isToday &&
                 'text-gray-400',
-              day.isToday && !day.isSelected && 'text-primary',
+              day.isToday && !day.isSelected && 'font-semibold text-secondary',
               dayIdx === 0 && 'rounded-tl-lg',
               dayIdx === 6 && 'rounded-tr-lg',
               dayIdx === month.days.length - 7 && 'rounded-bl-lg',
@@ -63,7 +63,7 @@
                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                 day.isToday && 'bg-primary font-semibold text-white',
                 day.isSelected && !day.isToday && 'bg-gray-900 text-white',
-                day.hasEvent && 'text-primary',
+                day.hasEvent && 'font-semibold text-secondary',
               ]"
             >
               {{ day.date.split("-").pop().replace(/^0/, "") }}
@@ -81,7 +81,7 @@
         >
           <div class="flex-auto">
             <h3 class="pr-10 font-semibold text-gray-900 xl:pr-0">
-              {{ training.name }}
+              {{ training.type.name }}
             </h3>
             <dl class="mt-2 flex flex-col text-gray-500 xl:flex-row">
               <div class="flex items-start space-x-3">
@@ -95,7 +95,7 @@
                   <time :datetime="training.datetime"
                     >Start:
                     {{
-                      new Date(training.start).toLocaleDateString("de-DE")
+                      new Date(training.blocks[0].start).toLocaleDateString("de-DE")
                     }}</time
                   >
                 </dd>
@@ -106,7 +106,7 @@
                 <dt class="mt-0.5">
                   <TagIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </dt>
-                <dd>{{ training.category }}</dd>
+                <dd>{{ training.type.category.name}}</dd>
               </div>
             </dl>
           </div>
@@ -134,8 +134,6 @@ import { getMonth } from "@/services/CallendarService";
 import {
   getTrainingBlocks,
   getTrainings,
-  getTrainingTypes,
-  getTrainingCategory,
 } from "@/services/DbConnector";
 import DynamicLoader from "@/components/DynamicLoader.vue";
 
@@ -164,13 +162,8 @@ const trainingsLoaded = ref(false);
 
 const loadMonth = async () => {
   eventDates.value.clear();
-  trainings.value = [];
 
   const trainingBlockIdsInCurrentMonth = new Set();
-  const collectedTrainingIds = new Set();
-  const collectedTrainings = [];
-  const loadedTrainingTypes = new Map();
-  const loadedCategories = new Map();
 
   const trainingBlocks = await getTrainingBlocks();
 
@@ -203,59 +196,7 @@ const loadMonth = async () => {
     }
   });
 
-  // Fetch trainings associated with the training blocks
-  for (const blockId of trainingBlockIdsInCurrentMonth) {
-    const trainingList = await getTrainings(blockId);
-
-    trainingList.forEach((training) => {
-      if (!collectedTrainingIds.has(training.id)) {
-        collectedTrainingIds.add(training.id);
-        collectedTrainings.push(training);
-      }
-    });
-  }
-
-  // Build trainings array
-  for (const training of collectedTrainings) {
-    // Fetch trainingType
-    let trainingType;
-    if (loadedTrainingTypes.has(training.type)) {
-      trainingType = loadedTrainingTypes.get(training.type);
-    } else {
-      const trainingTypeList = await getTrainingTypes(training.type);
-      trainingType = trainingTypeList[0];
-      loadedTrainingTypes.set(training.type, trainingType);
-    }
-
-    // Fetch category
-    let category;
-    if (loadedCategories.has(trainingType.category)) {
-      category = loadedCategories.get(trainingType.category);
-    } else {
-      const categoryList = await getTrainingCategory(trainingType.category);
-      category = categoryList[0];
-      loadedCategories.set(trainingType.category, category);
-    }
-
-    // Find earliest time block start
-    let earliestBlockStart = null;
-    training.blocks.forEach((blockId) => {
-      const block = trainingBlocks.find((b) => b.id === blockId);
-      if (block) {
-        const blockStart = new Date(block.start);
-        if (!earliestBlockStart || blockStart < earliestBlockStart) {
-          earliestBlockStart = blockStart;
-        }
-      }
-    });
-
-    trainings.value.push({
-      id: training.id,
-      start: earliestBlockStart ? earliestBlockStart.toISOString() : "",
-      name: trainingType.name,
-      category: category.name,
-    });
-  }
+  trainings.value = await getTrainings();
 
   month.value = getMonth(selectedYear.value, selectedMonth.value, eventDates.value);
   trainingsLoaded.value = true;

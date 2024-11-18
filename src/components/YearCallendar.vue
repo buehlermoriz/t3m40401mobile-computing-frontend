@@ -39,7 +39,7 @@
                 :datetime="day.date"
                 :class="[
                   day.isToday && 'bg-primary font-semibold text-white',
-                  day.hasEvent && 'text-primary',
+                  day.hasEvent && 'font-semibold text-secondary',
                   'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                 ]"
               >
