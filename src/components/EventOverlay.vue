@@ -59,54 +59,92 @@
                             {{ training.type.category.name }}
                           </p>
                         </div>
-                        <div
-                          v-if="!signedUp"
-                          class="mt-5 flex justify-between items-center"
-                        >
-                          <div>
-                            <p :class="trainingFull ? 'text-red-500' : ''">
-                              Teilnehmer: {{ participants }} /
-                              {{ training.type.maxParticipants }}
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            :disabled="trainingFull"
-                            :class="[
-                              'items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm',
-                              trainingFull
-                                ? 'bg-gray-400 text-white cursor-not-allowed'
-                                : 'bg-primary text-white',
-                            ]"
+                        <div v-if="userRole === 1">
+                          <div
+                            v-if="!signedUp"
+                            class="mt-5 flex justify-between items-center"
                           >
-                            Anmelden
-                          </button>
-                        </div>
-                        <div
-                          v-if="signedUp"
-                          class="mt-5 flex justify-between items-center"
-                        >
-                          <div :class="trainingFull ? 'text-red-500' : ''">
-                            <p>
-                              Teilnehmer: {{ participants }} /
-                              {{ training.type.maxParticipants }}
-                            </p>
-                            <p class="text-gray-400">
-                              Du bist angemeldet
-                              <span
-                                class="animate-pulse ml-2.5 inline-block size-2 shrink-0 rounded-full bg-green-400"
-                              >
-                              </span>
-                            </p>
+                            <div>
+                              <p :class="trainingFull ? 'text-red-500' : ''">
+                                Teilnehmer: {{ participants }} /
+                                {{ training.type.maxParticipants }}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              :disabled="trainingFull"
+                              :class="[
+                                'items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm',
+                                trainingFull
+                                  ? 'bg-gray-400 text-white cursor-not-allowed'
+                                  : 'bg-primary text-white',
+                              ]"
+                            >
+                              Anmelden
+                            </button>
                           </div>
+                          <div
+                            v-if="signedUp"
+                            class="mt-5 flex justify-between items-center"
+                          >
+                            <div :class="trainingFull ? 'text-red-500' : ''">
+                              <p>
+                                Teilnehmer: {{ participants }} /
+                                {{ training.type.maxParticipants }}
+                              </p>
+                              <p class="text-gray-400">
+                                Du bist angemeldet
+                                <span
+                                  class="animate-pulse ml-2.5 inline-block size-2 shrink-0 rounded-full bg-green-400"
+                                >
+                                </span>
+                              </p>
+                            </div>
 
-                          <button
-                            type="button"
-                            class="
-                              items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm bg-primary text-white"
+                            <button
+                              type="button"
+                              class="items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm bg-primary text-white"
+                            >
+                              Abmelden
+                            </button>
+                          </div>
+                        </div>
+                        <div v-if="userRole === 2">
+                          <div
+                            v-if="!signedUp"
+                            class="mt-5 flex justify-between items-center"
                           >
-                            Abmelden
-                          </button>
+                            <div>
+                              <p :class="trainingFull ? 'text-red-500' : ''">
+                                Teilnehmer: {{ participants }} /
+                                {{ training.type.maxParticipants }}
+                              </p>
+                            </div>
+                            <button @click="deleteTraining(training.id)">
+                              <TrashIcon class="h-5 text-red-500"></TrashIcon>
+                            </button>
+                          </div>
+                          <div
+                            v-if="signedUp"
+                            class="mt-5 flex justify-between items-center"
+                          >
+                            <div :class="trainingFull ? 'text-red-500' : ''">
+                              <p>
+                                Teilnehmer: {{ participants }} /
+                                {{ training.type.maxParticipants }}
+                              </p>
+                              <p class="text-gray-400">
+                                Sie dozieren diesen Kurs
+                                <span
+                                  class="animate-pulse ml-2.5 inline-block size-2 shrink-0 rounded-full bg-green-400"
+                                >
+                                </span>
+                              </p>
+                            </div>
+                            <button @click="deleteTraining(training.id)">
+                              <TrashIcon class="h-5 text-red-500"></TrashIcon>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -155,12 +193,11 @@
                   >
                     <li
                       v-for="(timeblock, index) in training.blocks"
-                      class="py-4 flex justify-between"
+                      class="py-4 flex gap-x-5"
                     >
                       <p>Block {{ index + 1 }}</p>
-                      <div class="flex gap-x-2">
-                        <p>von:</p>
-                        <time class="w-28">{{
+                      <div class="flex gap-x-1">
+                        <time>{{
                           new Date(timeblock.start).toLocaleString("de-DE", {
                             day: "2-digit",
                             month: "2-digit",
@@ -169,11 +206,9 @@
                             minute: "2-digit",
                           })
                         }}</time>
-                      </div>
-                      <div class="flex gap-x-2">
-                        <p>bis:</p>
-                        <time class="w-28">{{
-                          new Date(timeblock.start).toLocaleString("de-DE", {
+                        <p> bis </p> 
+                        <time>{{
+                          new Date(timeblock.end).toLocaleString("de-DE", {
                             day: "2-digit",
                             month: "2-digit",
                             year: "numeric",
@@ -198,8 +233,12 @@ import { onMounted, ref } from "vue";
 import { defineProps, defineEmits, computed } from "vue";
 import { TransitionRoot, TransitionChild } from "@headlessui/vue";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
-import { XMarkIcon } from "@heroicons/vue/20/solid";
+import { XMarkIcon, TrashIcon } from "@heroicons/vue/20/solid";
+import {deleteEvent} from "@/services/DbConnector";
 import store from "@/store";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   training: {
@@ -229,4 +268,9 @@ const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId);
 onMounted(() => {
   signedUp.value = props.training.participants.includes(middlewareUserId.value);
 });
+
+const deleteTraining = async (id) => {
+  await deleteEvent(id);
+  router.push({ path: "/" });
+};
 </script>

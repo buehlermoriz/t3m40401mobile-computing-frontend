@@ -177,50 +177,67 @@ const closeTraining = () => {
   dialogTraining.value = null;
   dialogOpen.value = false;
 };
-
 const loadMonth = async () => {
   eventDates.value.clear();
 
   const allTrainings = await getTrainings();
 
   const trainingsInCurrentMonth = [];
+
+  const currentYear = selectedYear.value;
+  const currentMonth = selectedMonth.value; // 0-based index
+
   allTrainings.forEach((training) => {
-    let trainingHasBlockInCurrentMonth = false;
+    let hasBlockInCurrentMonth = false;
 
     training.blocks.forEach((block) => {
       const startDate = new Date(block.start);
       const endDate = new Date(block.end);
 
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(0, 0, 0, 0);
-
-      for (
-        let date = new Date(startDate);
-        date <= endDate;
-        date.setDate(date.getDate() + 1)
+      // Check if the block is in the current month
+      if (
+        (startDate.getFullYear() === currentYear && startDate.getMonth() === currentMonth) ||
+        (endDate.getFullYear() === currentYear && endDate.getMonth() === currentMonth) ||
+        (startDate < new Date(currentYear, currentMonth + 1, 0) && endDate > new Date(currentYear, currentMonth, 1))
       ) {
-        if (
-          date.getFullYear() === selectedYear.value &&
-          date.getMonth() === selectedMonth.value
-        ) {
-          eventDates.value.add(date.toISOString().split("T")[0]);
-          trainingHasBlockInCurrentMonth = true;
+        hasBlockInCurrentMonth = true;
+
+        // Generate all dates within the block
+        let currentDate = new Date(startDate);
+        while (currentDate <= endDate) {
+          if (
+            currentDate.getFullYear() === currentYear &&
+            currentDate.getMonth() === currentMonth
+          ) {
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
+            eventDates.value.add(dateString);
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
         }
       }
     });
 
-    if (trainingHasBlockInCurrentMonth) {
+    if (hasBlockInCurrentMonth) {
       trainingsInCurrentMonth.push(training);
     }
   });
 
-  // Assign the filtered trainings to trainings.value
+  // Sort trainings by the start date of their first block
+  trainingsInCurrentMonth.sort((a, b) => {
+    const dateA = new Date(a.blocks[0].start);
+    const dateB = new Date(b.blocks[0].start);
+    return dateA - dateB;
+  });
+
+  // Assign the sorted trainings to trainings.value
   trainings.value = trainingsInCurrentMonth;
 
   month.value = getMonth(selectedYear.value, selectedMonth.value, eventDates.value);
   trainingsLoaded.value = true;
 };
-
 const prevMonth = () => {
   if (selectedMonth.value === 0) {
     selectedMonth.value = 11;
