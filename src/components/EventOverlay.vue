@@ -59,10 +59,15 @@
                             {{ training.type.category.name }}
                           </p>
                         </div>
-                        <div class="mt-5 flex justify-between items-center">
-                          <div :class="trainingFull ? 'text-red-500' : ''">
-                            Teilnehmer: {{ participants }} /
-                            {{ training.type.maxParticipants }}
+                        <div
+                          v-if="!signedUp"
+                          class="mt-5 flex justify-between items-center"
+                        >
+                          <div>
+                            <p :class="trainingFull ? 'text-red-500' : ''">
+                              Teilnehmer: {{ participants }} /
+                              {{ training.type.maxParticipants }}
+                            </p>
                           </div>
                           <button
                             type="button"
@@ -75,6 +80,32 @@
                             ]"
                           >
                             Anmelden
+                          </button>
+                        </div>
+                        <div
+                          v-if="signedUp"
+                          class="mt-5 flex justify-between items-center"
+                        >
+                          <div :class="trainingFull ? 'text-red-500' : ''">
+                            <p>
+                              Teilnehmer: {{ participants }} /
+                              {{ training.type.maxParticipants }}
+                            </p>
+                            <p class="text-gray-400">
+                              Du bist angemeldet
+                              <span
+                                class="animate-pulse ml-2.5 inline-block size-2 shrink-0 rounded-full bg-green-400"
+                              >
+                              </span>
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            class="
+                              items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm bg-primary text-white"
+                          >
+                            Abmelden
                           </button>
                         </div>
                       </div>
@@ -163,11 +194,12 @@
   </TransitionRoot>
 </template>
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { defineProps, defineEmits, computed } from "vue";
 import { TransitionRoot, TransitionChild } from "@headlessui/vue";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/20/solid";
+import store from "@/store";
 
 const props = defineProps({
   training: {
@@ -181,9 +213,20 @@ const props = defineProps({
 });
 const emits = defineEmits(["close"]);
 
+const signedUp = ref(false);
+
 const participants = computed(() => props.training.participants.length);
 
 const trainingFull = computed(() => {
   return participants.value >= props.training.type.maxParticipants;
+});
+
+const middlewareUserId = computed(
+  () => store.getters.user.data?.middlewareUserId
+);
+const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId);
+
+onMounted(() => {
+  signedUp.value = props.training.participants.includes(middlewareUserId.value);
 });
 </script>
