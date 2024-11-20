@@ -6,8 +6,9 @@
       v-for="training in trainings"
       :key="training.name"
       class="relative flex space-x-6 py-6 xl:static"
+      
     >
-      <div class="flex-auto">
+      <div class="flex-auto" @click.prevent="openTraining(training)">
         <h3 class="pr-10 font-semibold text-gray-900 xl:pr-0">
           {{ training.type.name }}
         </h3>
@@ -40,7 +41,12 @@
           <TrashIcon class="h-5 text-red-500"></TrashIcon>
         </button>
       </div>
-    </li>
+      <EventOverlay
+    v-if="dialogTraining"
+    :open="dialogOpen"
+    :training="dialogTraining"
+    @close="closeTraining"
+  />  </li>
   </ol>
   <div
     v-if="!trainingsLoaded"
@@ -71,6 +77,7 @@ import { ref, computed, onMounted } from "vue";
 import store from "@/store";
 import { getTrainings, deleteEvent } from "@/services/DbConnector";
 import { useRouter } from "vue-router";
+import  EventOverlay  from '@/components/EventOverlay.vue'
 
 const router = useRouter();
 
@@ -80,12 +87,24 @@ const middlewareUserId = computed(
 const trainings = ref([]);
 const trainingsLoaded = ref(false);
 const noEvents = ref(false);
+const dialogTraining = ref(null);
+const dialogOpen = ref(false);
 
 const deleteTraining = async (id) => {
   await deleteEvent(id);
   trainings.value = trainings.value.filter((training) => training.id !== id);
 };
 
+const openTraining = (training) => {
+  dialogTraining.value = training;
+  dialogOpen.value = true;
+};
+
+// Function to close the overlay
+const closeTraining = () => {
+  dialogTraining.value = null;
+  dialogOpen.value = false;
+};
 onMounted(async () => {
   if (middlewareUserId.value) {
     trainings.value = await getTrainings(middlewareUserId.value);

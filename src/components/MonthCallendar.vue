@@ -163,40 +163,41 @@ const trainingsLoaded = ref(false);
 const loadMonth = async () => {
   eventDates.value.clear();
 
-  const trainingBlockIdsInCurrentMonth = new Set();
+  const allTrainings = await getTrainings();
 
-  const trainingBlocks = await getTrainingBlocks();
+  const trainingsInCurrentMonth = [];
+  allTrainings.forEach((training) => {
+    let trainingHasBlockInCurrentMonth = false;
 
-  // Collect trainingBlock IDs in the current month
-  trainingBlocks.forEach((block) => {
-    const startDate = new Date(block.start);
-    const endDate = new Date(block.end);
+    training.blocks.forEach((block) => {
+      const startDate = new Date(block.start);
+      const endDate = new Date(block.end);
 
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(0, 0, 0, 0);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
 
-    let blockHasDateInCurrentMonth = false;
-
-    for (
-      let date = new Date(startDate);
-      date <= endDate;
-      date.setDate(date.getDate() + 1)
-    ) {
-      if (
-        date.getFullYear() === selectedYear.value &&
-        date.getMonth() === selectedMonth.value
+      for (
+        let date = new Date(startDate);
+        date <= endDate;
+        date.setDate(date.getDate() + 1)
       ) {
-        eventDates.value.add(date.toISOString().split("T")[0]);
-        blockHasDateInCurrentMonth = true;
+        if (
+          date.getFullYear() === selectedYear.value &&
+          date.getMonth() === selectedMonth.value
+        ) {
+          eventDates.value.add(date.toISOString().split("T")[0]);
+          trainingHasBlockInCurrentMonth = true;
+        }
       }
-    }
+    });
 
-    if (blockHasDateInCurrentMonth) {
-      trainingBlockIdsInCurrentMonth.add(block.id);
+    if (trainingHasBlockInCurrentMonth) {
+      trainingsInCurrentMonth.push(training);
     }
   });
 
-  trainings.value = await getTrainings();
+  // Assign the filtered trainings to trainings.value
+  trainings.value = trainingsInCurrentMonth;
 
   month.value = getMonth(selectedYear.value, selectedMonth.value, eventDates.value);
   trainingsLoaded.value = true;
