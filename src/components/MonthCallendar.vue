@@ -79,7 +79,7 @@
           :key="training.name"
           class="relative flex space-x-6 py-6 xl:static"
         >
-          <div class="flex-auto">
+          <div class="flex-auto" @click.prevent="openTraining(training)">
             <h3 class="pr-10 font-semibold text-gray-900 xl:pr-0">
               {{ training.type.name }}
             </h3>
@@ -110,6 +110,12 @@
               </div>
             </dl>
           </div>
+          <EventOverlay
+    v-if="dialogTraining"
+    :open="dialogOpen"
+    :training="dialogTraining"
+    @close="closeTraining"
+  /> 
         </li>
       </ol>
       <div
@@ -136,6 +142,7 @@ import {
   getTrainings,
 } from "@/services/DbConnector";
 import DynamicLoader from "@/components/DynamicLoader.vue";
+import  EventOverlay  from '@/components/EventOverlay.vue'
 
 // If you still need to receive initial values from props
 const props = defineProps({
@@ -159,6 +166,17 @@ const month = ref();
 const eventDates = ref(new Set());
 const trainings = ref([]);
 const trainingsLoaded = ref(false);
+const dialogTraining = ref(null);
+const dialogOpen = ref(false);
+
+const openTraining = (training) => {
+  dialogTraining.value = training;
+  dialogOpen.value = true;
+};
+const closeTraining = () => {
+  dialogTraining.value = null;
+  dialogOpen.value = false;
+};
 
 const loadMonth = async () => {
   eventDates.value.clear();

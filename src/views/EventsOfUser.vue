@@ -99,12 +99,11 @@ const openTraining = (training) => {
   dialogTraining.value = training;
   dialogOpen.value = true;
 };
-
-// Function to close the overlay
 const closeTraining = () => {
   dialogTraining.value = null;
   dialogOpen.value = false;
 };
+
 onMounted(async () => {
   if (middlewareUserId.value) {
     trainings.value = await getTrainings(middlewareUserId.value);

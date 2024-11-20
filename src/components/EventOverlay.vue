@@ -42,7 +42,7 @@
                   <div>
                     <div class="relative h-40 sm:h-56">
                       <img
-                        class="absolute size-full object-cover"
+                        class="absolute size-full object-cover rounded-md"
                         src="https://picsum.photos/800/600"
                         alt=""
                       />
