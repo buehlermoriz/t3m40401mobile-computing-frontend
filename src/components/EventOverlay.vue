@@ -72,6 +72,7 @@
                             </div>
                             <button
                               type="button"
+                                @click="signUp"
                               :disabled="trainingFull"
                               :class="[
                                 'items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm',
@@ -103,6 +104,7 @@
 
                             <button
                               type="button"
+                                @click="signOut"
                               class="items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm bg-primary text-white"
                             >
                               Abmelden
@@ -234,7 +236,7 @@ import { defineProps, defineEmits, computed } from "vue";
 import { TransitionRoot, TransitionChild } from "@headlessui/vue";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
 import { XMarkIcon, TrashIcon } from "@heroicons/vue/20/solid";
-import {deleteEvent} from "@/services/DbConnector";
+import {deleteEvent, patchTraining} from "@/services/DbConnector";
 import store from "@/store";
 import { useRouter } from "vue-router";
 
@@ -272,5 +274,17 @@ onMounted(() => {
 const deleteTraining = async (id) => {
   await deleteEvent(id);
   router.push({ path: "/" });
+};
+
+const signUp = async () => {
+  const newParticipants = [...props.training.participants, middlewareUserId.value];
+  await patchTraining(props.training.id, { participants: newParticipants });
+  signedUp.value = true;
+};
+
+const signOut = async () => {
+  const newParticipants = props.training.participants.filter((id) => id !== middlewareUserId.value);
+  await patchTraining(props.training.id, { participants: newParticipants });
+  signedUp.value = false;
 };
 </script>

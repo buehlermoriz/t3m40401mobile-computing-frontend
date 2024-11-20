@@ -256,6 +256,28 @@ export const newUser = async (name:string, role:number, birthDate: string, uid: 
   }
 }
 
+// PATCH ------------------------------------------------------------------------
+
+export const patchTraining = async (trainingId:number, participants:number[]): Promise<any>  => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      participants: toRaw(participants),
+    }
+    const response = await api.patch(`/trainings/${trainingId}/`, body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return patchTraining(trainingId, participants);
+    } else {
+      console.error('Error fetching training categories:', error);
+      throw error;
+    }
+  }
+}
 // DELETE ------------------------------------------------------------------------
 
 export async function deleteTrainingCategory(id: number): Promise<any> {
