@@ -1,4 +1,8 @@
 <template>
+    <h2 class="text-base font-semibold text-gray-900">Ihre Kurse</h2>
+  <p class="mt-1 text-sm/6 text-gray-600">
+    In der folgenden Übersicht finden Sie alle Kurse, an denen Sie teilnehmen.
+  </p>
   <ol
     class="mt-4 divide-y divide-gray-100 text-sm/6 lg:col-span-7 xl:col-span-8"
   >
