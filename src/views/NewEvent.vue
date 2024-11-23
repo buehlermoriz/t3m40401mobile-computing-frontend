@@ -348,12 +348,19 @@
           class="block text-sm font-medium text-gray-900 mt-2"
           >Start</label
         >
-        <div class="mb-2">
+        <div class="mb-2 flex gap-x-3">
           <input
             v-model="tbStart"
             type="date"
             name="tbStart"
             id="tbStart"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+          />
+          <input
+            v-model="tbStartTime"
+            type="time"
+            name="tbStartTime"
+            id="tbStartTime"
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
           />
         </div>
@@ -362,12 +369,19 @@
         <label for="tbEnd" class="block text-sm font-medium text-gray-900"
           >Ende</label
         >
-        <div class="mb-2">
+        <div class="mb-2 flex gap-x-3">
           <input
             v-model="tbEnd"
             type="date"
             name="tbEnd"
             id="tbEnd"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+          />
+          <input
+            v-model="tbEndTime"
+            type="time"
+            name="tbEndTime"
+            id="tbEndTime"
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
           />
         </div>
@@ -390,8 +404,20 @@
               class="flex items-center justify-between py-2 border-b border-gray-200"
             >
               <span class="text-sm text-gray-700">
-                {{ formatDate(timeblock.start) }} -
-                {{ formatDate(timeblock.end) }}
+                {{     new Date(timeblock.start).toLocaleString("de-DE", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }) }} -
+                {{     new Date(timeblock.end).toLocaleString("de-DE", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }) }}
               </span>
               <button
                 @click="removeTimeblock(index)"
@@ -484,31 +510,33 @@ const tNotes = ref<string>();
 const timeblocks = ref<Timeblock[]>([]);
 const tbStart = ref<string>("");
 const tbEnd = ref<string>("");
+  const tbStartTime = ref<string>("");
+    const tbEndTime = ref<string>("");
 // Params create Event
 const trainingTypeId = ref<number>();
 const timeBlockIds = ref<number[]>([]);
 
 function addTimeblock() {
-  if (tbStart.value && tbEnd.value) {
+  if (tbStart.value && tbEnd.value && tbStartTime.value && tbEndTime.value) {
+    //check if start is before end
+    if (new Date(`${tbStart.value}T${tbStartTime.value}:00+01:00`) > new Date(`${tbEnd.value}T${tbEndTime.value}:00+01:00`)) {
+      alert("The start date must be before the end date.");
+      return;
+    }
     const newTimeblock: Timeblock = {
-      start: `${tbStart.value}T00:00:00+01:00`,
-      end: `${tbEnd.value}T00:00:00+01:00`,
+      start: `${tbStart.value}T${tbStartTime.value}:00+01:00`,
+      end: `${tbEnd.value}T${tbEndTime.value}:00+01:00`,
     };
     timeblocks.value.push(newTimeblock);
     tbStart.value = "";
     tbEnd.value = "";
+    tbStartTime.value = "";
+    tbEndTime.value = "";
   } else {
     alert("Please select both start and end dates.");
   }
 }
 
-function formatDate(datetimeStr: string): string {
-  const date = new Date(datetimeStr);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-}
 
 function removeTimeblock(index: number) {
   timeblocks.value.splice(index, 1);
