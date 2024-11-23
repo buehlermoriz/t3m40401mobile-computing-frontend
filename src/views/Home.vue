@@ -34,7 +34,8 @@
             </transition>
           </Menu>
           <div class="ml-6 h-6 w-px bg-gray-300" />
-          <RouterLink to="/new-event" type="button" class="ml-6 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Kurs erstellen</RouterLink>
+          <RouterLink v-if="userRole > 1" to="/new-event" type="button" class="ml-6 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Kurs erstellen</RouterLink>
+          <RouterLink v-if="userRole === 1" to="/user-events" type="button" class="ml-6 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Meine Kurse</RouterLink>
         </div>
         <Menu as="div" class="relative ml-6 md:hidden">
           <MenuButton class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500">
@@ -44,9 +45,12 @@
           <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
             <MenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div class="py-1">
-                <MenuItem v-slot="{ active }">
-                  <RouterLink to="/new-event" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Kurs erstellen</RouterLink>
+                <MenuItem v-if="userRole > 1" v-slot="{ active }">
+                  <RouterLink  to="/new-event" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Kurs erstellen</RouterLink>
                 </MenuItem>
+                <MenuItem v-if="userRole === 1" v-slot="{ active }">
+                <RouterLink  to="/user-events" :class="[active ? 'bg-gray-100 text-gray-900 outline-none' : 'text-gray-700', 'block px-4 py-2 text-sm']">Kurs erstellen</RouterLink>
+              </MenuItem>
               </div>
               <div class="py-1">
                 <MenuItem v-slot="{ active }">
@@ -70,12 +74,16 @@ import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalI
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import  YearCallendar  from '@/components/YearCallendar.vue'
 import MonthCallendar from '@/components/MonthCallendar.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import store from "@/store";
+
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth())
 const selectedDay = ref(new Date().getDate())
 const view = ref('Jahres')
+const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId ?? 1);
+
 
 const handleDateSelected = ({ dayOfDate, monthIndex }) => {
   selectedMonth.value = monthIndex

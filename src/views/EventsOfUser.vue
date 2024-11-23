@@ -37,8 +37,11 @@
         </dl>
       </div>
       <div class="flex items-center">
-        <button @click="deleteTraining(training.id)">
+        <button v-if="userRole>1" @click="deleteTraining(training.id)">
           <TrashIcon class="h-5 text-red-500"></TrashIcon>
+        </button>
+        <button v-if="userRole===1" @click="signOut(training.id)">
+          <UserMinusIcon class="h-5 text-red-500"></UserMinusIcon>
         </button>
       </div>
       <EventOverlay
@@ -64,10 +67,18 @@
       class="mb-8 w-36 max-w-sm"
     ></video>
     <button
+    v-if="userRole > 1"
       @click="router.push({ path: '/new-event' })"
       class="w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
     >
       Event anlegen
+    </button>
+    <button
+    v-if="userRole === 1"
+      @click="router.push({ path: '/' })"
+      class="w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+    >
+      Zur Startseite
     </button>
   </div>
 </template>
@@ -75,15 +86,18 @@
 import { CalendarIcon, TagIcon, TrashIcon } from "@heroicons/vue/20/solid";
 import { ref, computed, onMounted } from "vue";
 import store from "@/store";
-import { getTrainings, deleteEvent } from "@/services/DbConnector";
+import { getTrainings, deleteEvent, patchTraining } from "@/services/DbConnector";
 import { useRouter } from "vue-router";
 import  EventOverlay  from '@/components/EventOverlay.vue'
+import { UserMinusIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 
 const middlewareUserId = computed(
   () => store.getters.user.data?.middlewareUserId
 );
+const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId ?? 1);
+
 const trainings = ref([]);
 const trainingsLoaded = ref(false);
 const noEvents = ref(false);
@@ -115,4 +129,15 @@ onMounted(async () => {
   }
   trainingsLoaded.value = true;
 });
+
+const signOut = async (trainingId) => {
+  const training = trainings.value.find((training) => training.id === trainingId);
+  // Remove the user ID from participants
+  const newParticipants = training.participants.filter(
+    (id) => id !== middlewareUserId.value
+  );
+  await patchTraining(trainingId, { participants: newParticipants });
+  //remove training from list
+  trainings.value = trainings.value.filter((training) => training.id !== trainingId);
+};
 </script>

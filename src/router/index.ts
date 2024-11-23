@@ -11,7 +11,8 @@ const router = createRouter({
             component: () => import("@/views/Home.vue"),
             meta: {
                 title: "Home",
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 1
             },
         },
         {
@@ -20,7 +21,8 @@ const router = createRouter({
             component: () => import("@/components/MonthCallendar.vue"),
             meta: {
                 title: "Monat",
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 1
             },
         },
         {
@@ -29,7 +31,8 @@ const router = createRouter({
             component: () => import("@/views/Login.vue"),
             meta: {
                 title: "Login",
-                requiresAuth: false
+                requiresAuth: false,
+                minRole: 1
             },
         },
         {
@@ -38,7 +41,8 @@ const router = createRouter({
             component: () => import("@/views/NewEvent.vue"),
             meta: {
                 title: "new Event",
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 2
             },
         },
         {
@@ -47,7 +51,8 @@ const router = createRouter({
             component: () => import("@/views/SignUp.vue"),
             meta: {
                 title: "Registrieren",
-                requiresAuth: false
+                requiresAuth: false,
+                minRole: 1
             },
         },
         {
@@ -56,7 +61,8 @@ const router = createRouter({
             component: () => import("@/views/Login.vue"),
             meta: {
                 title: "logout",
-                requiresAuth: false
+                requiresAuth: false,
+                minRole: 1
             },
             beforeEnter: () => {
                 store.dispatch("logout")
@@ -71,7 +77,8 @@ const router = createRouter({
             component: () => import('@/views/UserAccount.vue'),
             meta: {
                 title: 'Benutzer Konto',
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 1
             }
         },
         {
@@ -80,7 +87,8 @@ const router = createRouter({
             component: () => import('@/views/Success.vue'),
             meta: {
                 title: 'Success',
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 1
             }
         },
         {
@@ -89,7 +97,8 @@ const router = createRouter({
             component: () => import('@/views/CategoryView.vue'),
             meta: {
                 title: 'categories',
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 2
             }
         },
         {
@@ -98,7 +107,8 @@ const router = createRouter({
             component: () => import('@/views/EventsOfUser.vue'),
             meta: {
                 title: 'user-events',
-                requiresAuth: true
+                requiresAuth: true,
+                minRole: 1
             }
         }
     ]
@@ -113,11 +123,18 @@ router.beforeEach((to, from, next) => {
          .then(() => {
             const loggedIn = store.getters.user.loggedIn
             const requiresAuth = to.meta.requiresAuth
-
+            const minRole = to.meta.minRole
+            // reroute to login if not logged in
             if (requiresAuth && loggedIn === false) {
                 next({name: "login"});
             } else {
-                next();
+                // reroute to home if unsufficiant permissions
+                if (minRole as unknown as number > (store.getters.user.data?.middlewareUserRoleId ?? 1)) {
+                    next({name: "home"});
+                }
+                else{
+                    next();
+                }
             }
 
         })

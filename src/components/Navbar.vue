@@ -23,7 +23,7 @@
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
         <a
-          v-for="item in navigation"
+          v-for="item in filteredNavigation"
           :key="item.name"
           :href="item.href"
           class="text-sm/6 font-semibold text-gray-900"
@@ -68,7 +68,7 @@
           <div class="-my-6 divide-y divide-gray-500/10">
             <div class="space-y-2 py-6">
               <a
-                v-for="item in navigation"
+                v-for="item in filteredNavigation"
                 :key="item.name"
                 :href="item.href"
                 class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
@@ -101,14 +101,18 @@ import { RouterLink } from "vue-router";
 
 const isLoggedIn = computed(() => store.getters.user.loggedIn);
 const avatar = computed(() => store.getters.user.data?.photoURL);
+const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId ?? 1);
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Meine Kurse", href: "/user-events" },
-  { name: "Neuer Kurs", href: "/new-event" },
-  { name: "Kategorien", href: "/categories" },
-  { name: "Profil", href: "/user" },
+  { name: "Home", href: "/", minRole: 1 },
+  { name: "Meine Kurse", href: "/user-events", minRole: 1 },
+  { name: "Neuer Kurs", href: "/new-event", minRole: 2 },
+  { name: "Kategorien", href: "/categories", minRole: 3 },
+  { name: "Profil", href: "/user", minRole: 1 },
 ];
 
+const filteredNavigation = computed(() => {
+  return navigation.filter((item) => userRole.value >= item.minRole);
+});
 const mobileMenuOpen = ref(false);
 </script>
