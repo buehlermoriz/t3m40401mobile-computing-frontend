@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="props.open">
-    <Dialog class="relative z-10" @close="emits('close')">
+    <Dialog class="relative z-10">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -65,7 +65,7 @@
                             class="mt-5 flex justify-between items-center"
                           >
                             <div>
-                              <p :class="trainingFull ? 'text-red-500' : ''">
+                              <p :key="participants" :class="trainingFull ? 'text-red-500' : ''">
                                 Teilnehmer: {{ participants }} /
                                 {{ training.type.maxParticipants }}
                               </p>
@@ -256,7 +256,7 @@ const emits = defineEmits(["close"]);
 
 const signedUp = ref(false);
 
-const participants = computed(() => props.training.participants.length);
+const participants = ref(props.training.participants.length);
 
 const trainingFull = computed(() => {
   return participants.value >= props.training.type.maxParticipants;
@@ -279,12 +279,14 @@ const deleteTraining = async (id) => {
 const signUp = async () => {
   const newParticipants = [...props.training.participants, middlewareUserId.value];
   await patchTraining(props.training.id, { participants: newParticipants });
+  participants.value++;
   signedUp.value = true;
 };
 
 const signOut = async () => {
   const newParticipants = props.training.participants.filter((id) => id !== middlewareUserId.value);
   await patchTraining(props.training.id, { participants: newParticipants });
+  participants.value--;
   signedUp.value = false;
 };
 </script>

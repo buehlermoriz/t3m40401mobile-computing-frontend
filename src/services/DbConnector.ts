@@ -9,6 +9,10 @@ const api = axios.create({
 
 export default api;
 
+interface participants {
+  participants: number[]
+}
+
 // HELPER ------------------------------------------------------------------------
 
 export async function generateToken(): Promise<void> {
@@ -258,13 +262,14 @@ export const newUser = async (name:string, role:number, birthDate: string, uid: 
 
 // PATCH ------------------------------------------------------------------------
 
-export const patchTraining = async (trainingId:number, participants:number[]): Promise<any>  => {
+export const patchTraining = async (trainingId:number, participants: participants): Promise<any>  => {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
     };
     const body = {
-      participants: toRaw(participants),
+      participants: participants.participants
+
     }
     const response = await api.patch(`/trainings/${trainingId}/`, body, { headers });
     return response.data.id;
