@@ -32,4 +32,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_T3M40401MOBILE_COMPUTING }}'
           channelId: live
-          projectId: t3m404011mobile-computing
+          projectId: t3m40401mobile-computing

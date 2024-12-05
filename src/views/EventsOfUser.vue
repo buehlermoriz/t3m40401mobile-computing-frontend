@@ -40,7 +40,10 @@
           </div>
         </dl>
       </div>
-      <div class="flex items-center">
+      <div class="flex gap-x-2 items-center">
+        <button v-if="userRole>1" @click="editTraining(training.id)">
+          <PencilSquareIcon class="h-5 text-primary"></PencilSquareIcon>
+        </button>
         <button v-if="userRole>1" @click="deleteTraining(training.id)">
           <TrashIcon class="h-5 text-red-500"></TrashIcon>
         </button>
@@ -87,7 +90,7 @@
   </div>
 </template>
 <script setup>
-import { CalendarIcon, TagIcon, TrashIcon } from "@heroicons/vue/20/solid";
+import { CalendarIcon, TagIcon, TrashIcon, PencilSquareIcon } from "@heroicons/vue/20/solid";
 import { ref, computed, onMounted } from "vue";
 import store from "@/store";
 import { getTrainings, deleteEvent, patchTraining } from "@/services/DbConnector";
@@ -111,6 +114,10 @@ const dialogOpen = ref(false);
 const deleteTraining = async (id) => {
   await deleteEvent(id);
   trainings.value = trainings.value.filter((training) => training.id !== id);
+};
+
+const editTraining = (trainingId) => {
+  router.push({ name: 'new Event', params: { trainingId } });
 };
 
 const openTraining = (training) => {

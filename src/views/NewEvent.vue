@@ -433,7 +433,7 @@
           @click="createEvent"
           class="mt-2 w-full flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
         >
-          Kurs erstellen
+      <span v-if="isEditMode">Kurs anpassen</span><span v-else>Kurs erstellen</span>
         </button>
       </div>
     </div>
@@ -463,9 +463,12 @@ import {
   newTrainingType,
   newTrainingTimeBlock,
   newTraining,
+  getTrainings,
+  updateTraining,
 } from "@/services/DbConnector";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
+const route = useRoute();
 const router = useRouter();
 
 //Interfaces ---------
@@ -498,6 +501,12 @@ interface Timeblock {
   end: string;
 }
 const trainingTypes = ref<TrainingType[]>([]);
+
+//editmode
+const isEditMode = ref(false);
+const trainingId = ref<number | null>(null);
+const participants = ref<number[]>([]);
+
 // Params trainingType
 const ttName = ref<string>();
 const ttDescription = ref<string>();
@@ -622,8 +631,13 @@ const createEvent = async () => {
         ttRequirements.value
       );
     } else {
-      alert("Please fill out all training type fields.");
-      return;
+      if (selectedTrainingType.value!.id){
+        trainingTypeId.value = selectedTrainingType.value!.id;
+      }
+      else{
+        alert("Please fill out all training type fields.");
+        return;
+      }
     }
   } else {
     trainingTypeId.value = selectedTrainingType.value.id;
@@ -641,7 +655,13 @@ const createEvent = async () => {
     return;
   }
   // STEP 3: Create training
-  const response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, selectedTeacher.value!.id);
+  let response;
+  if(isEditMode.value){
+    response= await updateTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, participants.value!, trainingId.value!);
+  }
+  else{
+    response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, selectedTeacher.value!.id);
+  }
   if (typeof response === "number") {
     router.push({ path: 'success' })
   } else {
@@ -650,9 +670,44 @@ const createEvent = async () => {
 
 };
 
+async function loadTrainingData(id: number) {
+  const trainings = await getTrainings(undefined, id);
+  const training = trainings[0];
+  if (training) {
+    // Populate form fields
+    tNotes.value = training.notes;
+    participants.value = training.participants;
+    timeblocks.value = training.blocks.map((block: any) => ({
+      start: block.start,
+      end: block.end,
+    }));
+    selectedTrainingType.value = training.type;
+ // Find the teacher among participants
+ const teacherId = training.participants.find((participantId: number) =>
+      teachers.value.some((teacher) => teacher.id === participantId)
+    );
+
+    if (teacherId !== undefined) {
+      selectedTeacher.value = teachers.value.find(
+        (teacher) => teacher.id === teacherId
+      ) ?? null;
+    } else {
+      console.warn('Teacher not found among participants');
+      selectedTeacher.value = null;
+    }
+   }
+}
+
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
   categorys.value = await getTrainingCategory();
   teachers.value = await getUser(2);
+
+    // Check if in edit mode
+    if (route.params.trainingId) {
+    trainingId.value = Number(route.params.trainingId);
+    isEditMode.value = true;
+    await loadTrainingData(trainingId.value);
+  }
 });
 </script>

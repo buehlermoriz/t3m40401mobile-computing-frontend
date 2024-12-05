@@ -36,7 +36,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/new-event",
+            path: "/new-event/:trainingId?",
             name: "new Event",
             component: () => import("@/views/NewEvent.vue"),
             meta: {

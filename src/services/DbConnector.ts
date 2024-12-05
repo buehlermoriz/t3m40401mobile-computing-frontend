@@ -283,6 +283,32 @@ export const patchTraining = async (trainingId:number, participants: participant
     }
   }
 }
+
+export async function updateTraining(
+  trainingTypeId:number, timeblocks:number[], notes: string, currentParticipants: number[], trainingId: number
+): Promise<any> {
+  try {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
+    };
+    const body = {
+      notes: notes,
+      type: trainingTypeId,
+      blocks: toRaw(timeblocks),
+      participants: currentParticipants
+    }
+    const response = await api.put(`/trainings/${trainingId}/`, body, { headers });
+    return response.data.id;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      await generateToken();
+      return updateTraining(trainingTypeId, timeblocks, notes, currentParticipants, trainingId);
+    } else {
+      console.error('Error updating training:', error);
+      throw error;
+    }
+  }
+}
 // DELETE ------------------------------------------------------------------------
 
 export async function deleteTrainingCategory(id: number): Promise<any> {
