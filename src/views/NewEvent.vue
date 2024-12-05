@@ -663,7 +663,7 @@ const createEvent = async () => {
     response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, selectedTeacher.value!.id);
   }
   if (typeof response === "number") {
-    router.push({ path: 'success' })
+    router.push({ path: '/success' })
   } else {
     alert("Fehler beim Erstellen des Trainings");
   }
