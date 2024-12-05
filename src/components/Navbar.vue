@@ -76,7 +76,12 @@
               >
             </div>
             <div class="py-6">
-              <RouterLink v-if="isLoggedIn" to="/user" class="-m-1.5 p-1.5">
+              <RouterLink
+                v-if="isLoggedIn"
+                to="/user"
+                class="-m-1.5 p-1.5"
+                @click="mobileMenuOpen = false"
+              >
                 <img
                   class="mx-auto h-10 w-10 rounded-full"
                   :src="avatar"
@@ -101,7 +106,9 @@ import { RouterLink } from "vue-router";
 
 const isLoggedIn = computed(() => store.getters.user.loggedIn);
 const avatar = computed(() => store.getters.user.data?.photoURL);
-const userRole = computed(() => store.getters.user.data?.middlewareUserRoleId ?? 1);
+const userRole = computed(
+  () => store.getters.user.data?.middlewareUserRoleId ?? 1
+);
 
 const navigation = [
   { name: "Home", href: "/", minRole: 1 },
