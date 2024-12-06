@@ -188,7 +188,7 @@ export const newTrainingTimeBlock = async (start:string, end:string): Promise<nu
   }
 }
 
-export const newTraining = async (trainingTypeId:number, timeblocks:number[], notes: string, selectedTeacher: number): Promise<number>  => {
+export const newTraining = async (trainingTypeId:number, timeblocks:number[], notes: string, selectedParticipants: number[]): Promise<number>  => {
   try {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('APItoken')}`,
@@ -197,16 +197,14 @@ export const newTraining = async (trainingTypeId:number, timeblocks:number[], no
       notes: notes,
       type: trainingTypeId,
       blocks: toRaw(timeblocks),
-      participants: [
-        selectedTeacher
-      ]
+      participants: selectedParticipants
     }
     const response = await api.post('/trainings/', body, { headers });
     return response.data.id;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
       await generateToken();
-      return newTraining(trainingTypeId, timeblocks, notes, selectedTeacher);
+      return newTraining(trainingTypeId, timeblocks, notes, selectedParticipants);
     } else {
       console.error('Error fetching training categories:', error);
       throw error;

@@ -649,7 +649,7 @@ const createEvent = async () => {
     response= await updateTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, participants.value!, trainingId.value!);
   }
   else{
-    response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, selectedTeacher.value!.id);
+    response = await newTraining(trainingTypeId.value, timeBlockIds.value, tNotes.value!, participants.value!);
   }
   if (typeof response === "number") {
     router.push({ path: '/success' })
@@ -686,6 +686,17 @@ async function loadTrainingData(id: number) {
     }
    }
 }
+
+watch(selectedTeacher, (newTeacher) => {
+  if (newTeacher) {
+    // Remove existing teacher IDs from participants
+    const teacherIds = teachers.value.map(t => t.id);
+    participants.value = participants.value.filter(id => !teacherIds.includes(id));
+
+    // Add the selected teacher's ID
+    participants.value.push(newTeacher.id);
+  }
+});
 
 onMounted(async () => {
   trainingTypes.value = await getTrainingTypes();
