@@ -5,6 +5,7 @@
       src="../assets/success.mp4"
       autoplay
       muted
+      playsinline
       class="mb-8 w-36 max-w-sm"
     ></video>
     <button

@@ -71,6 +71,7 @@
       autoplay
       muted
       loop
+      playsinline
       class="mb-8 w-36 max-w-sm"
     ></video>
     <button
