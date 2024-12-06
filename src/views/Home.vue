@@ -65,8 +65,10 @@
         </Menu>
       </div>
     </header>
+    <!-- PROBLEM: Verwaltung von Variablen zwischen den Komponenten -->
   <YearCallendar v-if="view == 'Jahres'" :selectedYear="selectedYear" @dateSelected="handleDateSelected"/>
   <MonthCallendar v-if="view == 'Monats'" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :selectedDay="selectedDay"/>
+  <!-- Da die Monats- und Jahresansichten ausgelagert wurden gibt es eine Verwaltung der Variablen in beide Richtungen -->
 </template>
 
 <script setup>

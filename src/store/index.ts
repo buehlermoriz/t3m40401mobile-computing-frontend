@@ -81,6 +81,7 @@ const actions: ActionTree<RootState, RootState> = {
           updatedUser.uid,
           updatedUser.email || ""
         );
+        // PROBLEM: Verwaltung von Usern und Beibehaltung der Session ------------------------------------------------
         context.commit("SET_USER", {
           email: updatedUser.email,
           displayName: updatedUser.displayName,
@@ -94,6 +95,7 @@ const actions: ActionTree<RootState, RootState> = {
           middlewareUserId: userId,
           middlewareUserRoleId: role,
         });
+        //--------------------------------------------------------------------------------------------------------------
         context.commit("SET_LOGGED_IN", true);
       } else {
         throw new Error("login failed");

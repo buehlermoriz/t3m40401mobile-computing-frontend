@@ -16,7 +16,7 @@ export const getMonth = (year: number, monthIndex: number, eventDatesSet: any) =
   const monthName = monthNames[monthIndex];
   const firstDayOfMonth = new Date(year, monthIndex, 1);
   const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
-
+  // PROBLEM Erstellung der Monatsansicht mit passenden Tagen ------------------------------------------------
   // Adjust startDate to the previous Sunday
   const startDate = new Date(firstDayOfMonth);
   startDate.setDate(startDate.getDate() - startDate.getDay());
@@ -24,7 +24,7 @@ export const getMonth = (year: number, monthIndex: number, eventDatesSet: any) =
   // Adjust endDate to the next Saturday
   const endDate = new Date(lastDayOfMonth);
   endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
-
+  // ---------------------------------------------------------------------------------------------------------
   const days = [];
   const date = new Date(startDate);
 
