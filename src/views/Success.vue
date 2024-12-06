@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center my-36">
     <p class="text-xl font-semibold mb-4">Der Kurs wurde erfolgreich angelegt!</p>
     <video
-      src="../assets/success.webm"
+      src="../assets/success.mp4"
       autoplay
       muted
       class="mb-8 w-36 max-w-sm"

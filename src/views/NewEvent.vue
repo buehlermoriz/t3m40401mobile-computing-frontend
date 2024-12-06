@@ -489,6 +489,7 @@ interface Timeblock {
   end: string;
 }
 const trainingTypes = ref<TrainingType[]>([]);
+const loaded = ref(false);
 
 //editmode
 const isEditMode = ref(false);
@@ -697,5 +698,6 @@ onMounted(async () => {
     isEditMode.value = true;
     await loadTrainingData(trainingId.value);
   }
+  loaded.value = true;
 });
 </script>

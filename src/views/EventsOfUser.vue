@@ -67,7 +67,7 @@
       Keine Events für diese User vorhanden!
     </p>
     <video
-      src="../assets/empty.webm"
+      src="../assets/empty.mp4"
       autoplay
       muted
       loop
