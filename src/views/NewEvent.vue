@@ -221,32 +221,20 @@
       </div>
       <div
         v-if="selectedTrainingType"
-        class="p-4 mt-3 ring-gray-300 ring-1 rounded-md"
+        class="p-4 mt-3 ring-gray-300 ring-1 rounded-md text-gray-900"
       >
-        <div class="flex items-center gap-x-2 text-gray-900">
-          <span class="flex-1 font-semibold">Gewählte Vorlesungsart:</span>
-          <span>{{ selectedTrainingType.name }}</span>
-        </div>
-        <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">Beschreibung</span>
-          <span>{{ selectedTrainingType.description }}</span>
-        </div>
-        <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">Kategorie</span>
-          <span>{{ selectedTrainingType.category.name }}</span>
-        </div>
-        <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">max. Teilnehmer</span>
-          <span>{{ selectedTrainingType.maxParticipants }}</span>
-        </div>
-        <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">min. Teilnehmer</span>
-          <span>{{ selectedTrainingType.minParticipants }}</span>
-        </div>
-        <div class="flex items-center gap-x-2 text-gray-900 mt-1">
-          <span class="flex-1 font-semibold">Anforderungen</span>
-          <span>{{ selectedTrainingType.requirements }}</span>
-        </div>
+          <p class="flex-1 font-semibold my-1">Gewählte Vorlesungsart:</p>
+          <p>{{ selectedTrainingType.name }}</p>
+          <p class="flex-1 font-semibold my-1">Beschreibung</p>
+          <p>{{ selectedTrainingType.description }}</p>
+          <p class="flex-1 font-semibold my-1">Kategorie</p>
+          <p>{{ selectedTrainingType.category.name }}</p>
+          <p class="flex-1 font-semibold my-1">max. Teilnehmer</p>
+          <p>{{ selectedTrainingType.maxParticipants }}</p>
+          <p class="flex-1 font-semibold my-1">min. Teilnehmer</p>
+          <p>{{ selectedTrainingType.minParticipants }}</p>
+          <p class="flex-1 font-semibold my-1">Anforderungen</p>
+          <p>{{ selectedTrainingType.requirements }}</p>
         <button
           @click="selectedTrainingType = null"
           class="mt-2 flex w-full justify-center rounded-md px-3 p-1.5 text-sm leading-6 text-primary ring-1 ring-primary"
